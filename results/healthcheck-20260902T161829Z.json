@@ -1,0 +1,1 @@
+{"error": "julia exited with code 127", "stderr": "/var/spool/slurm/job1983823/slurm_script: line 61: julia: command not found\n"}
