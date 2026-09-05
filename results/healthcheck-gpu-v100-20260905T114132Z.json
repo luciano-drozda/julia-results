@@ -1,0 +1,1 @@
+{"error": "sbatch rejected the job before it queued", "sbatch_stderr": "sbatch: error: Unable to open file /scratch/coop/drozda/skill-slurm-julia-cuda-jacc/reference/run_job_single_gpu_genpartition.sbatch"}
