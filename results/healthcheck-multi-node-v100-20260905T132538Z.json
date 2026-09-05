@@ -1,1 +1,0 @@
-{"error": "mpirun exited with code 127", "stderr": "/var/spool/slurm/job1987191/slurm_script: line 80: mpirun: command not found\n"}
