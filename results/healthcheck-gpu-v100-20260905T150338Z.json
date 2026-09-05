@@ -1,1 +1,0 @@
-{"jacc":{"result":[11.0,22.0,33.0,44.0]},"node":{"driver":"12.4.0","runtime":"12.4.0","hostname":"krakengpu1.cluster"},"cuda":{"device":"Tesla V100-PCIE-16GB","result":[11.0,22.0,33.0,44.0]}}
