@@ -1,0 +1,1 @@
+{"devices_visible":2,"jacc":{"CuDevice(1)":{"result":[11.0,22.0,33.0,44.0]},"CuDevice(0)":{"result":[11.0,22.0,33.0,44.0]}},"node":{"driver":"12.4.0","runtime":"12.4.0","hostname":"krakenngpu05.cluster"},"cuda":{"CuDevice(1)":{"name":"NVIDIA A30","result":[11.0,22.0,33.0,44.0]},"CuDevice(0)":{"name":"NVIDIA A30","result":[11.0,22.0,33.0,44.0]}}}
