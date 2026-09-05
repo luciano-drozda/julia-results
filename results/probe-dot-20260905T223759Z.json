@@ -1,0 +1,1 @@
+{"probe":{"driver":"12.4.0","sum_plain":136.0,"device":"Tesla V100-PCIE-16GB","sum_bcast":272.0,"runtime":"12.4.0","cublas_gemv":[28.0,32.0,36.0,40.0],"mapreduce":272.0,"dot_cublas":"ERR: DivideError: integer division error"}}
