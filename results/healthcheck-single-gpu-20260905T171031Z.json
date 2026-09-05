@@ -1,1 +1,0 @@
-{"jacc":{"result":[11.0,22.0,33.0,44.0]},"node":{"driver":"12.4.0","runtime":"12.4.0","hostname":"krakenngpu05.cluster"},"cuda":{"device":"NVIDIA A30","result":[11.0,22.0,33.0,44.0]}}
