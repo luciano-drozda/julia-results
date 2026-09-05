@@ -1,0 +1,1 @@
+{"jacc":{"array_type":"CuArray","backend":"CUDABackend(false, false)","sample_array_type":"CuArray{Float32, 1, CUDACore.DeviceMemory}","on_device":true,"result":[11.0,22.0,33.0,44.0]},"node":{"driver":"12.4.0","runtime":"12.4.0","hostname":"krakengpu2.cluster"},"cuda":{"device":"Tesla V100-PCIE-16GB","result":[11.0,22.0,33.0,44.0]}}
