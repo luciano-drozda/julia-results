@@ -1,0 +1,1 @@
+{"device":"Tesla V100-PCIE-16GB","jacc_atomic":{"fail":0,"ok":62,"detail":{}},"seconds":63.3,"jacc_reduce":{"fail":0,"ok":62,"detail":{}},"cuda_reduce":{"fail":0,"ok":62,"detail":{}},"cuda_atomic":{"fail":0,"ok":62,"detail":{}}}
