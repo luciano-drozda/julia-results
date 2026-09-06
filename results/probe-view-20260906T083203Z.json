@@ -1,0 +1,1 @@
+{"probe":{"truth_partial":70.0,"mapreduce_full":72.0,"truth_full":72.0,"device":"Tesla V100-PCIE-16GB","mapreduce_view_full":72.0,"mapreduce_view_step":32.0,"truth_step":32.0,"mapreduce_view":70.0}}
