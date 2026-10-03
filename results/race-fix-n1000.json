@@ -1,0 +1,1 @@
+{"error": "julia exited with code 126", "stderr_head": "/var/spool/slurm/job2026116/slurm_script: line 78: /home/coop/drozda/.juliaup/bin/julia: Argument list too long\n", "stderr": "/var/spool/slurm/job2026116/slurm_script: line 78: /home/coop/drozda/.juliaup/bin/julia: Argument list too long\n", "stdout_tail": ""}
