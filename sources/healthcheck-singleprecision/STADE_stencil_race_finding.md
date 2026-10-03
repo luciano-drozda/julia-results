@@ -1,4 +1,4 @@
-# STADE 0.4.3: data race in the generated GPU adjoint of `stencil_loss`
+# STADE 0.4.3: data race in the generated GPU adjoints of `stencil_loss` and `advection`
 
 Found on 2026-10-03 during a single-precision health check. Tesla V100-PCIE-16GB, CUDA.jl, JACC 1.3.1, Julia 1.11.9 (code generated with Julia 1.10.11).
 Raw data: branch `bench-raw` of `luciano-drozda/julia-results`, folder `raw/healthchecks/` (jobs `healthcheck-sp-v100-*`, `diag-stencil-race2-*`) and `sources/healthcheck-singleprecision/`.
@@ -39,9 +39,31 @@ CUDA.@atomic ub[i_x + 1] += __oldb_0
 The code that decides that a loop is safe to run in parallel and that chooses between a plain update and an atomic update (`cgen_*`, `jgen_*`, `cgen_device_assign`).
 Suggested rule: if one array is updated at two or more different index expressions inside one parallel loop body, use atomic updates for all of them, or run the loop serially.
 
+## Second affected kernel: `advection` (tested 2026-10-03, jobs `diag-advection-race2-*`)
+The primal is **not** affected. The adjoint has the same defect.
+
+| Item | Result (CUDA and JACC, Float64 and Float32, 5 repeats per case) |
+|---|---|
+| Primal `advection_cuda` / `advection_jacc` | Float64: error exactly 0 against a sequential CPU reference at all 7 sizes (n = 4 to 1,000,000), zero spread between repeats. Float32: 4e-8 to 5e-7, zero spread. |
+| Adjoint, unmodified, `ub` | n = 4 and 33: exact. n >= 100: error 0.06 to 0.8, with different results between repeats (spread up to 0.2). |
+| Adjoint, unmodified, scalar gradients `cb`, `dxb`, `dtb` | Wrong as well (7e-3 at n = 100, up to 1 to 2 at n = 1e6), because they read the corrupted `ub` in later reverse steps. |
+| Adjoint, unmodified, `u` after call, restored `du`, `dub` | Correct (Float64: exactly 0). Only `ub` and the scalar gradients are affected. |
+| Adjoint with atomic `ub` updates | `ub`: 4e-16 to 9e-16 (Float64), 1e-7 to 3e-7 (Float32). Scalar gradients: up to 3e-13 (Float64) and 1e-4 (Float32, n = 1e6, 5e6 accumulated terms). |
+
+Cause: `cuda_kernel_advection_b_4!` and `jacc_kernel_advection_b_4!` contain plain updates:
+```julia
+ub[i_x] = ub[i_x] + __oldb_2
+ub[i_x - 1] = ub[i_x - 1] + -__oldb_2
+```
+Threads `i` and `i-1` both update `ub[i-1]`. The patch that makes both lines atomic (`CUDA.@atomic` / `Atomix.@atomic`) fixes all sizes.
+The Float32 tape (`initstacks_advection_b_*` with `Float32`) allocates and works on CUDA and JACC.
+
+Reference check: the hand-derived CPU reference agrees with finite differences (1e-8 to 1e-11) and with STADE's sequential CPU adjoint (1e-16).
+Note for test authors: after the adjoint call, `du` holds its **initial** values, because the reverse sweep restores it from the tape. The first run of the test compared `du` with the final value, which was a flaw in the test and not in STADE.
+
 ## Not yet tested
-- `advection`: a static scan of the generated CUDA adjoints finds the same pattern in `cuda_kernel_advection_b_4!` (`ub[i_x]` and `ub[i_x - 1]`, plain updates). It is **not tested on the GPU**.
-- The scan is a heuristic. It checks only plain updates of one shadow array at several indices.
+- The static scan of the other generated CUDA adjoints (`dotprod`, `matvec_loss`, `mlp1d`, `mpnn`, `transformer`, `unet`) finds no further case of this pattern. The scan is a heuristic.
+- The remaining kernels are not tested for races on the GPU at large sizes. The correctness gate of the benchmark plan will test them.
 
 ## Suggested regression test
 Run `validate_corpus_gpu.jl` with integer arguments above the warp size (for example `i_n = 1000`) and repeat each adjoint 5 times. A race shows as a wrong or a changing result.
