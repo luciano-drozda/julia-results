@@ -1,4 +1,10 @@
 3e12c9ac3503e37856cdbe970248f16a31eed01323569bac6ac358c56af46eb7  ./README.md
+7ead587fcd03b80f0bf09e87b71a2ff0c64f2d2d137364e7065317a708cca6b9  ./raw/healthchecks/diag-advection-race-20261003T183933Z/job.json
+bcb8a0c37ff34337da2ec814af36f043817c45d381c14c3369bb862257ce4d30  ./raw/healthchecks/diag-advection-race-20261003T183933Z/result.json
+0270da6c242eeffb1a501cfd1d94f03db2274972031d427c0ef9ff543e62c62e  ./raw/healthchecks/diag-advection-race-20261003T183933Z/submission.json
+5890d9455b4f8000d04bc9b4d5933200f5844b50bbb4930003e4fff3648e8781  ./raw/healthchecks/diag-advection-race2-20261003T184254Z/job.json
+2ba39ebcecf31a170f0c0667b45aa6fea30d9ebc832450127864a46e8cfd58f8  ./raw/healthchecks/diag-advection-race2-20261003T184254Z/result.json
+51878c780542b76bd82f9f2f770159203358f66d9b315fa83b071234aa221638  ./raw/healthchecks/diag-advection-race2-20261003T184254Z/submission.json
 61ef763a710f06fc8f7978e834f00cfe3665bd92c05fdb4bcc9cd707003c56c4  ./raw/healthchecks/diag-cudnn-20261003T161104Z/job.json
 c9f97bac14614da6451cd917b5591764445acb061305317e2e98b9cd731ff134  ./raw/healthchecks/diag-cudnn-20261003T161104Z/result.json
 fd519a53e92806aabb8c8d6f895966327b5c4e37ce52004da90d40bff2de5f3b  ./raw/healthchecks/diag-cudnn-20261003T161104Z/submission.json
