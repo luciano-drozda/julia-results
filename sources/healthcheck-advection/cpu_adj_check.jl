@@ -1,0 +1,17 @@
+src = read("adv_driver_final.jl", String)
+a = findfirst("ufun(n) =", src)[1]; b = findfirst("relerr(a, b)", src)[1]
+eval(Meta.parseall(src[a:b-1]))
+include("/home/claude/work/gen/advection_b.jl")      # STADE CPU adjoint (sequential, keep_push_pop=false)
+n, nstep = 33, 5; c, dx, dt = 0.4, 1.0, 0.1
+u0 = ufun(n); du0 = dufun(n); ubs = ubfun(n); dubs = dubfun(n)
+(ru, rdu, rub, rdub, rcb, rdxb, rdtb) = cpu_adjoint(u0, du0, ubs, dubs, c, dx, dt, nstep)
+u = copy(u0); du = copy(du0); ub = copy(ubs); dub = copy(dubs)
+st = initstacks_advection_b(n, nstep)
+res = advection_b(u, ub, du, dub, c, 0.0, dx, 0.0, dt, 0.0, nstep, n, st)
+re(a, b) = maximum(abs.(a .- b)) / max(maximum(abs.(b)), 1e-300)
+println("return value of STADE CPU adjoint: ", res)
+println("u   after call vs final u (forward)      : ", re(u, ru))
+println("du  after call vs final du (forward)     : ", re(du, rdu), "   | vs INITIAL du0 : ", re(du, du0))
+println("ub  after call vs my reference           : ", re(ub, rub))
+println("dub after call vs my reference           : ", re(dub, rdub))
+println("scalar grads (cb, dxb, dtb) vs reference : ", abs(res[1]-rcb)/abs(rcb), " ", abs(res[2]-rdxb)/abs(rdxb), " ", abs(res[3]-rdtb)/abs(rdtb))

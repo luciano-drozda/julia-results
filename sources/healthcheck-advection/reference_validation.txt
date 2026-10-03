@@ -1,0 +1,7 @@
+Validation of the hand-derived CPU reference (run in the sandbox, Julia 1.10.11, no GPU)
+1) Finite differences (n=12, nstep=7):
+   scalar grads rel err vs FD: c=1.3e-08 dx=9.4e-09 dt=1.7e-10 | grad wrt u0 max abs err 4.4e-11 | grad wrt du0 max abs err 1.3e-11
+2) STADE sequential CPU adjoint (advection_b.jl, n=33, nstep=5) against the reference:
+   u after call vs final u: 0.0 | du after call vs final du: 2.0 but vs INITIAL du0: 0.0 (the reverse sweep restores du)
+   ub: 0.0 | dub: 0.0 | scalar grads: 4.0e-16, 5.0e-16, 4.0e-16
+Consequence: run 1 (job diag-advection-race-*) compared du with the FINAL du, which is a flaw in the test expectation. Use run 2 (diag-advection-race2-*).
