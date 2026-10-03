@@ -1,0 +1,1 @@
+{"host": "krakenngpu04.cluster", "torch": "2.9.1+cu128", "torch_cuda_build": "12.8", "cuda_available": true, "device": "NVIDIA A30", "matmul": [[7.0, 10.0], [15.0, 22.0]], "fit": {"weight": 2.9995861053466797, "bias": 1.9992152452468872, "final_loss": 9.834984666667879e-05, "seconds": 0.618}, "on_device": "cuda"}
