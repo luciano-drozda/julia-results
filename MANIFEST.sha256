@@ -11,6 +11,12 @@ fd519a53e92806aabb8c8d6f895966327b5c4e37ce52004da90d40bff2de5f3b  ./raw/healthch
 9ce07991eb5cf722330abf12d6983b78d3a9e802e7495de3504bd9fd907d022e  ./raw/healthchecks/diag-jaxreq-20261003T161233Z/job.json
 be3c98ba33c0f226f4780c2c9e059a33798816d9f65a24d7a429233f989a6d1e  ./raw/healthchecks/diag-jaxreq-20261003T161233Z/result.json
 4fdb3730b5fbed96acb72524c7bc7b7b9b4362d438cc56b007174b491172d459  ./raw/healthchecks/diag-jaxreq-20261003T161233Z/submission.json
+eeda1dba7ae9244019be7663c0617d757ecb568d528ada13cdcfc8b04ae0b155  ./raw/healthchecks/diag-stencil-race-20261003T171443Z/job.json
+365b09200d2b50cb24ee21d232b2ebe7099c36e9636522c0ea523e4e412c25f7  ./raw/healthchecks/diag-stencil-race-20261003T171443Z/result.json
+258381d73fdc85993a793e77ad171582590910c6a4d23f18400f29f52ff0cdc9  ./raw/healthchecks/diag-stencil-race-20261003T171443Z/submission.json
+4632f6edebfbed59614ebea0a234957c56ebfc27e72fe8b4f95de25437da26c7  ./raw/healthchecks/diag-stencil-race2-20261003T171623Z/job.json
+77ef051f7162d3f2ac9cd3024d1f157220769cb4f42099d7a0e4487e3ae7ebf3  ./raw/healthchecks/diag-stencil-race2-20261003T171623Z/result.json
+edbb126a522e6ef242812236ccb6030121e6fd71861a180d59818e8b81572405  ./raw/healthchecks/diag-stencil-race2-20261003T171623Z/submission.json
 d8e8e645d1d99c0e7789053e3f7f2234c7dae4772b0a39f76b19dc9cabb8f05c  ./raw/healthchecks/healthcheck-gpu-v100-20261003T154113Z/job.json
 f9adb90856b8e5a591af18d926bd53b77fa40fc2131f24dabdb4d9834a5cf03a  ./raw/healthchecks/healthcheck-gpu-v100-20261003T154113Z/result.json
 fa569f8d54e0a35b21260684b71267a5fa45028a9e65d15a9c7b3b5b574c63b7  ./raw/healthchecks/healthcheck-gpu-v100-20261003T154113Z/submission.json
@@ -23,6 +29,9 @@ b67c670ead846f37c0222bd3f1e5c77aa926c49198cc02b564c9dca42f3276f5  ./raw/healthch
 3adc0f7c946dc1a43b6409932602bf1e3ad3d46e0bb5e75c3a7520aa369c389c  ./raw/healthchecks/healthcheck-jax-v100-c-20261003T162813Z/job.json
 e5e5203c23889e4162997e048056ca4a7c11f6e094e1ec4a9d0747e1a584d3dc  ./raw/healthchecks/healthcheck-jax-v100-c-20261003T162813Z/result.json
 2780b2785cd62a43d5f9ff9797fbfd753341e91476586124fa801ae2c1827261  ./raw/healthchecks/healthcheck-jax-v100-c-20261003T162813Z/submission.json
+62be77161c8c0b397f63bab68b6489f4b58624b399cbb37f01dc1fb3573b06f1  ./raw/healthchecks/healthcheck-sp-v100-20261003T171017Z/job.json
+342ce318a95fac085f6cb395273a37463d20286cbe8400d47276e34dacca698f  ./raw/healthchecks/healthcheck-sp-v100-20261003T171017Z/result.json
+0a29981ce142fb3b935e6cc05f8572c6b3b2386ffd380a4a7e4e37d319e811ca  ./raw/healthchecks/healthcheck-sp-v100-20261003T171017Z/submission.json
 c35c6a37492cae561f622a4ec85a97cbcd3a865af454c9991c581a1c788a82ea  ./raw/healthchecks/healthcheck-torch-v100-20261003T154343Z/job.json
 68f3828ff78a4f6e4b94fb76a2ac56cbbc2b2a5c0ddcf234a8b0e3cb34dd561b  ./raw/healthchecks/healthcheck-torch-v100-20261003T154343Z/result.json
 e42c8ad38126c470b14665b94348a42819df61aaa865a0b53aae6d365d7c292c  ./raw/healthchecks/healthcheck-torch-v100-20261003T154343Z/submission.json
