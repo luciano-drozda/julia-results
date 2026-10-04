@@ -190,6 +190,10 @@ f06a43aa010bc97817802e141d5f9c7fab605e89fa1ba2dd37516eed01562301  ./sources/phas
 64aa4d796742c3e8d9615477e6486ae9a0e57206dddef5a6b9fe9d786060a584  ./sources/phase0/jobs/bench-j7a-r2.json
 b287bd82d0b57cbf72ac6d7a97e4cdbe14c60af534fdde00e2aa0e73330f8df8  ./sources/phase0/jobs/bench-j7b-r1.json
 dd7489795a7b28dc4b443e6774abd0c3163c69f133d23060c1d6248e6f7db324  ./sources/phase0/jobs/bench-j7b-r2.json
+9539fcb84ab6fe613e17f4c460bb6a25ba64a4e2fe0e86e32f3582a7042ce7f0  ./sources/phase0/jobs/bench-u1-r1.json
+92ee3dce5e0300fa5f60bd857e2ab347b54fd75b743f953865b078c0d4c0d492  ./sources/phase0/jobs/bench-u2-r1.json
+5faa28fadbbb7e7d0fc9cdf60e6aefade0ef93e3b891e9d6956b46c0f69b24a8  ./sources/phase0/jobs/bench-u3-r1.json
+9ca9281e505a0a14f2060df4ed76da012b5039a6d0c982a7f820423bdf0af8f5  ./sources/phase0/jobs/bench-u4-r1.json
 00b3953b4ce4682b9b5646950a49d5ac12e625ebd956f07ab241c0e4b09b7688  ./sources/phase0/jobs/cputest1.json
 bb44ca6d91137822cc10509d9fe4446b6e97539731643c0b4c200b27fc053ba7  ./sources/phase0/jobs/cputest2.json
 13f56bac7c035ef403a8c8c98d93adb174d972c861b274fcd5904a98147c2c75  ./sources/phase0/jobs/cputest3.json
