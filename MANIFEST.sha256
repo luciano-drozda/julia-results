@@ -105,6 +105,9 @@ e9f49d020befca8a2509d033a103359fefccbb7d149c4ad272ce350a827b93cd  ./raw/p2-unet-
 ccf5a4048278aec474c420d07897a815d07f8ab55c3f23003d9b597554f6cb43  ./raw/p2-unet-fast/bench-u3-r1-20261004T214936Z/job.json
 b06a02f92310793ee5eccd8ae5f91fe7854203939780755eddfa9e8de349541c  ./raw/p2-unet-fast/bench-u3-r1-20261004T214936Z/result.json
 5be2222ca19dda699e3dd5c1aa56b59b2478d54d745f55824fa808864ced9ae8  ./raw/p2-unet-fast/bench-u3-r1-20261004T214936Z/submission.json
+6468a3872d089974e9f8bf9bcd238e72cf941af0b8fc5b7ddbf6a4eef9954c8b  ./raw/p2-unet-fast/bench-u3-r2-20261004T220821Z/job.json
+65a25e32064081f4255adf1396515926609b4e7ad78715b15916215b22c346fd  ./raw/p2-unet-fast/bench-u3-r2-20261004T220821Z/result.json
+e8db76a13858be70cb217ec11ec29c9c350d69f12e1256b220cd96eeefd16220  ./raw/p2-unet-fast/bench-u3-r2-20261004T220821Z/submission.json
 7297cc452b1d14c71bc53e62ee8505ea4ee568eccfc7d481d1bd016acc6c156e  ./raw/p2-unet-fast/bench-u4-r1-20261004T215047Z/job.json
 c50bfb74d5b08c4d9451e193b42077423a454e16cd13833fc9ac4ec4780385dd  ./raw/p2-unet-fast/bench-u4-r1-20261004T215047Z/result.json
 f5e942e94e8fb068fdb795eb0fff447fd721f37a6aed0b4c91d46f6d4d4061d7  ./raw/p2-unet-fast/bench-u4-r1-20261004T215047Z/submission.json
