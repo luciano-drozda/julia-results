@@ -8,6 +8,12 @@ bcb8a0c37ff34337da2ec814af36f043817c45d381c14c3369bb862257ce4d30  ./raw/healthch
 61ef763a710f06fc8f7978e834f00cfe3665bd92c05fdb4bcc9cd707003c56c4  ./raw/healthchecks/diag-cudnn-20261003T161104Z/job.json
 c9f97bac14614da6451cd917b5591764445acb061305317e2e98b9cd731ff134  ./raw/healthchecks/diag-cudnn-20261003T161104Z/result.json
 fd519a53e92806aabb8c8d6f895966327b5c4e37ce52004da90d40bff2de5f3b  ./raw/healthchecks/diag-cudnn-20261003T161104Z/submission.json
+3ee96d0fa5d6dd92545069a2bd4b1a0cbf7c68e6128fc26399cedf862f1f5f47  ./raw/healthchecks/diag-jacc-reduction-20261004T120825Z/job.json
+ba3228d43c969e04ec4964b89a52d60766fd38001bc21b570177c50758da5f7d  ./raw/healthchecks/diag-jacc-reduction-20261004T120825Z/result.json
+ef6ca3886e2f9d5d92cbacccc3858c552c52e1510622b459991416b6b9ccf994  ./raw/healthchecks/diag-jacc-reduction-20261004T120825Z/submission.json
+505da6c31d10699574d537f306d40416abac96b08980c17c37ec48de9f106445  ./raw/healthchecks/diag-jacc-reduction2-20261004T120950Z/job.json
+613fc45930dddf6b1d4a9ee57619e591736636bc7cf6f2c3d296baf27a6359ae  ./raw/healthchecks/diag-jacc-reduction2-20261004T120950Z/result.json
+f4cee7fc96cd54bb348c28c14da6964255e1d3bbdb1096cc3f3d946e24029875  ./raw/healthchecks/diag-jacc-reduction2-20261004T120950Z/submission.json
 3911f979c3cc6824ee32140b16ae4d0c330272e57e6db2425a1ad4d101e34ce1  ./raw/healthchecks/diag-jax-conv-20261003T160926Z/job.json
 420f69be9cda68049fcb6fe0aa40132c74f4a73b13e6f2f5f9ebf81cfa9d3f5e  ./raw/healthchecks/diag-jax-conv-20261003T160926Z/result.json
 2c08f4e6f8bf3ad3816ab98fb3e914799273e9685c886ab0533606f5154f4a35  ./raw/healthchecks/diag-jax-conv-20261003T160926Z/submission.json
