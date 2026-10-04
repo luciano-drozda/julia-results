@@ -55,9 +55,12 @@ OUT = {"fw": FW, "records": [], "env": {}, "errors": []}
 def log(msg): print(msg, file=sys.stderr, flush=True)
 
 # ---------------------------------------------------------------- building
+_DATA = {}
 def build(fam, params, mode):
     """Framework arrays for one size. mode 'adjoint' or 'primal'. Returns (P, c, host_arrays)."""
-    arrays, scalars, ints = L.make_data(fam, params)
+    ck = (fam, json.dumps(params, sort_keys=True))
+    if _DATA.get("key") != ck: _DATA.clear(); _DATA["key"] = ck; _DATA["val"] = L.make_data(fam, params)      # one host copy per (case, size): generating 2^26 values six times wasted the budget
+    arrays, scalars, ints = _DATA["val"]
     c = dict(L.fam_env(fam, params)); c.update(ints)
     if "eps" in scalars: c["eps"] = scalars["eps"]
     P = {}

@@ -1,5 +1,5 @@
 3e12c9ac3503e37856cdbe970248f16a31eed01323569bac6ac358c56af46eb7  ./README.md
-de723557cc911d266a28b11b3098cfc809beaa1813f690d45dbcebd49257ee0f  ./progress.json
+0ba2459ab5461a65624e279f4fcb3f4742833007776d319db8053a50fbdff3e4  ./progress.json
 7ead587fcd03b80f0bf09e87b71a2ff0c64f2d2d137364e7065317a708cca6b9  ./raw/healthchecks/diag-advection-race-20261003T183933Z/job.json
 bcb8a0c37ff34337da2ec814af36f043817c45d381c14c3369bb862257ce4d30  ./raw/healthchecks/diag-advection-race-20261003T183933Z/result.json
 0270da6c242eeffb1a501cfd1d94f03db2274972031d427c0ef9ff543e62c62e  ./raw/healthchecks/diag-advection-race-20261003T183933Z/submission.json
@@ -200,14 +200,14 @@ df92aa899f0c2b7dd1addb7fc4e58146e3f68c6838aadabe34a7bc3604d9c6a3  ./sources/phas
 ab52bf55351668f93f515e5c34447efa67c1df2bcacb56b2d07ef4957aca9479  ./sources/phase0/lib/bench_models.py
 7cf3275293f486ff949c5e1f2bf8aabc4d8c5c3b9596d3bef0936df759211290  ./sources/phase0/lib/cases_spec.json
 b65d6998904ab9403c6f5a4b7fdb0b974df750d391052b0dbc13080d2effaf60  ./sources/phase0/lib/driver.jl
-40075c8b191dcb2943865b23aee27f183a4363a3392dc9fb6af71c18f4dd6f47  ./sources/phase0/lib/harness_fw.py
+683793cbb6d2efddcf15887c1d8308a38ec3e3005ddbaa7066f03332af91cdf4  ./sources/phase0/lib/harness_fw.py
 4097ae8a1c5e957ebce654924de6b6f2be693de89469ea26f15eb7376485d7c2  ./sources/phase0/lib/probe_fw.py
 156c78288e5a545bed9421c2ea90b961a5dcd3b48a53021e1d43453eff47fca3  ./sources/phase0/lib/probes.jl
 1f31fc75e7b92fa616e2d6fa4ad511c118436d0ca9d640d417a6a8c2f72d6cdf  ./sources/phase0/lib/stade_runner.jl
 2c1020f9243ec252c1cf538ad2937e1944db4da7a3d2b90102c996d09e85c427  ./sources/phase0/lib/train.jl
 6558acdab1c1d4c5e953869c81b12032d683a00517ca24c44c8af40666fda3c9  ./sources/phase0/make_spec.py
-d29e352ee8932eaefeba2fce074428eb7a7ba34e2b0353eb31273268e282c6a5  ./sources/phase0/payloads/bench-j0.jl
-f2e50e4e9e44155683ca32f75fd22174d4f7fc8867819bee85374a1ca65fb992  ./sources/phase0/payloads/bench-j0.json
+7eacd1d2e36938dfeba4771e3d4abc647827b0901879a9f73c36d4d4083c25f3  ./sources/phase0/payloads/bench-j0.jl
+fc33f3d336861655b530eeaf6e499588263a50e4461b364162b6772f2e18975f  ./sources/phase0/payloads/bench-j0.json
 829c3bdfacee45f0e39ee5864750246d5c59f289e7acd138d1e9eb0fc4897dfe  ./sources/phase0/test/cpu_gate.jl
 352184dc32ce24bd82f5c73afa8c1bce76181f1ebb085d74ef662a704fddd1e4  ./sources/phase0/test/host_audit.jl
 9184c0767a4a250014614adc0b63c8eea7e5505171091a6f9538847cf28e5149  ./sources/phase0/test/host_audit.json
