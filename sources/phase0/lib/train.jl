@@ -114,7 +114,8 @@ function train_group(gi, group, order)
     comm = get(JOB, "stub_mpi", false) ? nothing : MPI.COMM_WORLD
     for (pi, letter) in enumerate(order)
         tag = "t$(gi)_p$(pi)_$(letter)"
-        snap0 = gpu_snapshot("before_" * tag); t0 = time(); recs = Any[]; info = Dict{String,Any}("tag" => tag, "tool" => letter)
+        cot = wait_for_idle_gpu(90.0); cot["foreign_processes_after_wait"] > 0 && plog("WARNING: other GPU process(es) during pass " * tag)
+        snap0 = gpu_snapshot("before_" * tag); t0 = time(); recs = Any[]; info = Dict{String,Any}("tag" => tag, "tool" => letter, "cotenant" => cot)
         if letter == "S"
             for t in group["tasks"]; train_stade!(recs, BE, t, comm); end
         else

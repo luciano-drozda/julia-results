@@ -140,6 +140,7 @@ cc1b043a56841cf5a74549f8be6f7a9140fabcdaa1aed92a266a96f571343b3c  ./sources/jacc
 2b47fbeb2902a7eef707bafacb8066066205292e05ec73bdba901d51b2ff847b  ./sources/jacc-reduction/validate_backend_agreement_before_race_fix.txt
 df22a6b022973abcdd5a191e02e081abd33d04ec27e0a44067017afbf679a019  ./sources/phase0/analysis/analyze.py
 69269d8256ed2352c9de02a288042e16a296d3b74fe254161383072b0f69e4a5  ./sources/phase0/analysis/test_analyze.py
+e3c2e6a95979340165a48b6fc4fbbf070d11a826d3325605fdb5e2bbb1604b31  ./sources/phase0/analysis/unet_plots.py
 5f427421ee04b902f44f3584d49f74ed84b3c1b86d3541a6c2817636edc72220  ./sources/phase0/build_payload.py
 2a64a9bde5b51629f53b38d3a6f4140c55870fd4786ac114994a3028a9eb513b  ./sources/phase0/final/advection_b_cuda.stripped.jl
 22b78390d4c1e358e56b07a8d589ab08cd6ea6994c61f7f7d94bc0dbddd7711d  ./sources/phase0/final/advection_b_jacc.stripped.jl
@@ -203,9 +204,13 @@ f06a43aa010bc97817802e141d5f9c7fab605e89fa1ba2dd37516eed01562301  ./sources/phas
 b287bd82d0b57cbf72ac6d7a97e4cdbe14c60af534fdde00e2aa0e73330f8df8  ./sources/phase0/jobs/bench-j7b-r1.json
 dd7489795a7b28dc4b443e6774abd0c3163c69f133d23060c1d6248e6f7db324  ./sources/phase0/jobs/bench-j7b-r2.json
 9539fcb84ab6fe613e17f4c460bb6a25ba64a4e2fe0e86e32f3582a7042ce7f0  ./sources/phase0/jobs/bench-u1-r1.json
+ba339bd0fafd5d9d84e45c992cf575fe73408cd5071abe39fed50a2064360c4e  ./sources/phase0/jobs/bench-u1-r2.json
 92ee3dce5e0300fa5f60bd857e2ab347b54fd75b743f953865b078c0d4c0d492  ./sources/phase0/jobs/bench-u2-r1.json
+959daa55ba8f7094d1e5a66713bdb02c930fa2d093286b996edb5e42edc3cfc9  ./sources/phase0/jobs/bench-u2-r2.json
 5faa28fadbbb7e7d0fc9cdf60e6aefade0ef93e3b891e9d6956b46c0f69b24a8  ./sources/phase0/jobs/bench-u3-r1.json
+1455bc9cbc6ac7dac45a383a49d46ea074a8cc21922528d05458860ae81f8aaa  ./sources/phase0/jobs/bench-u3-r2.json
 9ca9281e505a0a14f2060df4ed76da012b5039a6d0c982a7f820423bdf0af8f5  ./sources/phase0/jobs/bench-u4-r1.json
+d5413a1c9a4e7b7d75ff576eec48edac4b4143c2742aae610bdfcf518e38e3a7  ./sources/phase0/jobs/bench-u4-r2.json
 00b3953b4ce4682b9b5646950a49d5ac12e625ebd956f07ab241c0e4b09b7688  ./sources/phase0/jobs/cputest1.json
 bb44ca6d91137822cc10509d9fe4446b6e97539731643c0b4c200b27fc053ba7  ./sources/phase0/jobs/cputest2.json
 13f56bac7c035ef403a8c8c98d93adb174d972c861b274fcd5904a98147c2c75  ./sources/phase0/jobs/cputest3.json
@@ -215,12 +220,12 @@ e26074b3ee2c92169cadb92a51bfa7835a204f8d90876b98e98a42aa6292353c  ./sources/phas
 df92aa899f0c2b7dd1addb7fc4e58146e3f68c6838aadabe34a7bc3604d9c6a3  ./sources/phase0/lib/bench_lib.py
 ab52bf55351668f93f515e5c34447efa67c1df2bcacb56b2d07ef4957aca9479  ./sources/phase0/lib/bench_models.py
 7cf3275293f486ff949c5e1f2bf8aabc4d8c5c3b9596d3bef0936df759211290  ./sources/phase0/lib/cases_spec.json
-b65d6998904ab9403c6f5a4b7fdb0b974df750d391052b0dbc13080d2effaf60  ./sources/phase0/lib/driver.jl
+52e4f5f582420a74f0b83c9305cca72e19bad1d164acea9ad43817704788d7d7  ./sources/phase0/lib/driver.jl
 683793cbb6d2efddcf15887c1d8308a38ec3e3005ddbaa7066f03332af91cdf4  ./sources/phase0/lib/harness_fw.py
 4097ae8a1c5e957ebce654924de6b6f2be693de89469ea26f15eb7376485d7c2  ./sources/phase0/lib/probe_fw.py
 156c78288e5a545bed9421c2ea90b961a5dcd3b48a53021e1d43453eff47fca3  ./sources/phase0/lib/probes.jl
 1f31fc75e7b92fa616e2d6fa4ad511c118436d0ca9d640d417a6a8c2f72d6cdf  ./sources/phase0/lib/stade_runner.jl
-2c1020f9243ec252c1cf538ad2937e1944db4da7a3d2b90102c996d09e85c427  ./sources/phase0/lib/train.jl
+5e1cb4719e67c53a02dc6c8c285d78ff2bd64803eabfb418b8eaa656165c8b3e  ./sources/phase0/lib/train.jl
 6558acdab1c1d4c5e953869c81b12032d683a00517ca24c44c8af40666fda3c9  ./sources/phase0/make_spec.py
 7eacd1d2e36938dfeba4771e3d4abc647827b0901879a9f73c36d4d4083c25f3  ./sources/phase0/payloads/bench-j0.jl
 fc33f3d336861655b530eeaf6e499588263a50e4461b364162b6772f2e18975f  ./sources/phase0/payloads/bench-j0.json

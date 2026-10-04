@@ -61,6 +61,23 @@ function gpu_snapshot(tag)
     return d
 end
 
+# ------------------------------------------------------------------ co-tenants: a timing taken while another process uses the GPU is not valid
+function foreign_gpu_apps()
+    s = smi("--query-compute-apps=pid,used_memory")
+    s == "unavailable" && return String[]
+    out = String[]
+    for l in split(s, '\n')
+        isempty(strip(l)) && continue
+        p = strip(split(l, ',')[1]); p != string(getpid()) && push!(out, p)
+    end
+    return out
+end
+function wait_for_idle_gpu(maxwait)
+    t0 = time(); n = length(foreign_gpu_apps())
+    while n > 0 && time() - t0 < maxwait; sleep(5); n = length(foreign_gpu_apps()); end
+    return Dict{String,Any}("waited_s" => time() - t0, "foreign_processes_after_wait" => n)
+end
+
 # ------------------------------------------------------------------ generated code
 const MODS = Dict{String,Any}()
 const LOADS = Any[]
@@ -240,11 +257,12 @@ function run_group(gi, group, order)
     for (pi, letter) in enumerate(order)
         tag = "g$(gi)_p$(pi)_$(letter)"
         plog("pass " * tag * " begins")
+        cot = wait_for_idle_gpu(90.0); cot["foreign_processes_after_wait"] > 0 && plog("WARNING: " * string(cot["foreign_processes_after_wait"]) * " other GPU process(es) during pass " * tag)
         if over_budget(60.0)
             push!(passes, Dict{String,Any}("tag" => tag, "tool" => letter, "skipped" => "time budget")); continue
         end
         snap0 = gpu_snapshot("before_" * tag); t0 = time()
-        recs = Any[]; info = Dict{String,Any}("tag" => tag, "tool" => letter)
+        recs = Any[]; info = Dict{String,Any}("tag" => tag, "tool" => letter, "cotenant" => cot)
         if letter == "S"
             recs = stade_pass(group["tasks"])
         else
