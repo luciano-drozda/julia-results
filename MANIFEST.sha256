@@ -99,6 +99,9 @@ a4944a59a73164aa250e142fc8aaa5b07a60b33f7790300a79a1f810ced3a625  ./raw/p2-mpnn-
 7e2f5fe98a90d41f0e5a5f6cc7042904beb3156d4782b831349fbfd434f172dd  ./raw/p2-mpnn-fast/bench-m2-r1-20261004T225133Z/job.json
 64399e0de6bb1e45e33421f15aa6c96f0938152557fc47ff4814aef0ed5f4e61  ./raw/p2-mpnn-fast/bench-m2-r1-20261004T225133Z/result.json
 e98b74c060e6e62d15df572c9ba212b23171b9122a2a040ad0b77bc684634c97  ./raw/p2-mpnn-fast/bench-m2-r1-20261004T225133Z/submission.json
+76992e932ee3cef739addc5fd86954ab6420eaf171539753aeb9a9b4eec32fd4  ./raw/p2-mpnn-fast/diag-mpnn-attrib-20261004T231049Z/job.json
+805c5e4a81a4592e18be19c98a8f5de4031a7ef2cdd5e9f89ed005314fddf705  ./raw/p2-mpnn-fast/diag-mpnn-attrib-20261004T231049Z/result.json
+a7cf2464fef05b9630df9f6d3c5672e635024b26d10dc36efe1eff7f874b38bc  ./raw/p2-mpnn-fast/diag-mpnn-attrib-20261004T231049Z/submission.json
 eed78042b44348eef8920c24f9ad9979bd79c03ad85115bc9ed9bd759b84107b  ./raw/p2-mpnn-fast/diag-mpnn-gap-20261004T230122Z/job.json
 e0c0997adbc7c001ef709c96d4df58f937a88186adeb00083298bd0a3b29562a  ./raw/p2-mpnn-fast/diag-mpnn-gap-20261004T230122Z/result.json
 c89a375501ed2c8b22253c45169d306a393cb6e83ef2f69332d9cef68da2b315  ./raw/p2-mpnn-fast/diag-mpnn-gap-20261004T230122Z/submission.json
