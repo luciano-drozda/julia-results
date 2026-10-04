@@ -10,6 +10,7 @@ struct Backend
     elapsed::Function       # f -> seconds measured with device events (or wall time on CPU)
     memfree::Function       # () -> free device bytes
     reclaim::Function       # () -> release cached device memory
+    pool::Function          # () -> (bytes in use, bytes cached) of the device memory pool
     fname::String           # suffix used in generated function names: "cuda", "jacc", or "" for the CPU adjoint
 end
 

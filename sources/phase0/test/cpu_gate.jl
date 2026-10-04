@@ -4,7 +4,7 @@ include("../lib/stade_runner.jl")
 set_spec!(read("../lib/cases_spec.json", String))
 ref = JSON3.read(read(ARGS[1], String), Dict{String,Any})
 sizeidx = length(ARGS) >= 2 ? parse(Int, ARGS[2]) : 1      # 1 = tiny, 2 = first real size
-be = Backend("cpu", x -> copy(x), () -> nothing, f -> (t = time_ns(); f(); (time_ns() - t) * 1e-9), () -> 0, () -> nothing, "")
+be = Backend("cpu", x -> copy(x), () -> nothing, f -> (t = time_ns(); f(); (time_ns() - t) * 1e-9), () -> 0, () -> nothing, () -> (0, 0), "")
 corp = "/home/claude/work/stade_044/STADE.jl/test/val-corpus"; gen = "/home/claude/work/gen_044"
 spec = SPECD[]
 for c in spec["cases"]

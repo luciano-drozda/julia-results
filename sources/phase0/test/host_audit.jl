@@ -17,7 +17,7 @@ function load_mock(code)
     Base.include_string(m, code, "mock")
     return m, code
 end
-be = Backend("mock", x -> copy(x), () -> nothing, f -> 0.0, () -> 0, () -> nothing, "cuda")
+be = Backend("mock", x -> copy(x), () -> nothing, f -> 0.0, () -> 0, () -> nothing, () -> (0, 0), "cuda")
 spec = SPECD[]; final = "/home/claude/work/phase0/final"
 rows = []
 for c in spec["cases"]

@@ -99,6 +99,7 @@ def make_adjoint(fam, P, c, variant, scope):
             g = torch.cuda.CUDAGraph()
             with torch.cuda.graph(g): holder = evaluate()
             def run(): g.replay(); return holder
+            run.cleanup = g.reset
         elif variant == "compile":
             comp = torch.compile(lambda lv: M.loss_fn(ops, fam, lv, c))
             def evaluate_c():
@@ -136,6 +137,7 @@ def make_primal(fam, P, c, variant):
             with torch.cuda.graph(g):
                 with torch.no_grad(): holder = M.FORWARD[fam](ops, Pp, c)
             def runner(): g.replay(); return holder
+            runner.cleanup = g.reset
             return runner
         return run
     f = jax.jit(lambda P_: M.FORWARD[fam](ops, P_, c))
@@ -233,6 +235,9 @@ def memory_probe(fam, params, mode, variant, scope):
         except Exception as e: rec["static_error"] = repr(e)[:200]
     if mode == "adjoint" and FW == "torch":
         rec["grads_bytes"] = sum(nbytes(P[n]) for n in gn)
+    getattr(run, "cleanup", lambda: None)()
+    if FW == "jax" and rec.get("static"):      # primary JAX measure: what the compiled executable needs at run time (the peak also holds XLA autotuning scratch)
+        s_ = rec["static"]; rec["M_A_peak"] = rec.get("M_A"); rec["M_A"] = (s_.get("argument_size_in_bytes") or 0) + (s_.get("output_size_in_bytes") or 0) + (s_.get("temp_size_in_bytes") or 0)
     return rec
 
 # ---------------------------------------------------------------- tasks
@@ -275,6 +280,7 @@ def run_task(t):
                     if "time" in modes:
                         rec = time_protocol(run)
                         OUT["records"].append(dict(base, kind="time", first_call_s=first_call_s, **rec))
+                    getattr(run, "cleanup", lambda: None)()          # release a CUDA graph and its private pool
                     if "mem" in modes:
                         P = run = out = grads = gn = None
                         gc.collect()

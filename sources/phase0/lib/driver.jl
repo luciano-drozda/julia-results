@@ -96,15 +96,18 @@ function load_ref()
 end
 
 function mem_probe(be, mod, code, fam, arrays, scalars, ints, mode)
-    be.reclaim(); free0 = be.memfree()
+    be.reclaim(); free0 = be.memfree(); (u0, c0) = be.pool()
     st = setup!(be, mod, code, fam, arrays, scalars, ints, mode)
     for _ in 1:3; step!(st); end
     be.sync()
-    free1 = be.memfree(); parts = mem_parts(st)
-    be.reclaim(); free2 = be.memfree()
-    st = nothing; be.reclaim(); free3 = be.memfree()
+    free1 = be.memfree(); (u1, c1) = be.pool(); parts = mem_parts(st)
+    be.reclaim(); free2 = be.memfree(); (u2, c2) = be.pool()
+    st = nothing; be.reclaim(); free3 = be.memfree(); (u3, c3) = be.pool()
+    # M_A: bytes of all arrays the call needs (exact). M_B: pool bytes reserved above the baseline. M_C: the same after the cache is released.
+    # The driver-level free-memory differences are kept as a cross-check: they move in steps of the allocator granularity (32 MiB).
     return Dict("free0" => free0, "free1" => free1, "free2" => free2, "free3" => free3, "M_A" => parts["total"],
-                "M_B" => free0 - free1, "M_C" => free0 - free2, "leak" => free0 - free3, "parts" => parts)
+                "M_B" => (u1 + c1) - (u0 + c0), "M_C" => (u2 + c2) - (u0 + c0), "pool_used_bytes" => u1 - u0, "pool_leak_after_free" => (u3 + c3) - (u0 + c0),
+                "M_B_driver" => free0 - free1, "M_C_driver" => free0 - free2, "driver_leak" => free0 - free3, "parts" => parts)
 end
 
 function time_parts(st::State, be::Backend)
