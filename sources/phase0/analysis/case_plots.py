@@ -41,8 +41,8 @@ def times(recs, case, mode):
             v = np.asarray(r["trial_us"], float); out[(r["contender"], r["size"])] = (np.median(v), np.percentile(v, 25), np.percentile(v, 75))
     return out
 
-def footer(fig, meta, extra=""):
-    fig.text(0.01, 0.008, f"{meta.get('gpu') or 'GPU'} · float64 · batch 1 · median of 30 trials, bars = quartiles · ONE repeat, no stability check{(' · ' + extra) if extra else ''}", fontsize=10.5, color="#555")
+def footer(fig, meta, extra="", what="median of 30 trials"):
+    fig.text(0.01, 0.008, f"{meta.get('gpu') or 'GPU'} · float64 · batch 1 · {what}, bars = quartiles · ONE repeat, no stability check{(' · ' + extra) if extra else ''}", fontsize=10.5, color="#555")
 
 def setx(ax, c):
     ax.set_xscale("log", base=c["log"]); ax.set_xticks(c["ticks"]); ax.set_xticklabels(c["tl"]); ax.minorticks_off(); ax.set_xlabel(c["xlabel"])
@@ -122,7 +122,7 @@ def fig_train(recs, meta, out, c):
     axs[0].set_ylabel("time per training step (ms)"); axs[0].set_title("Step time (synchronized, median and quartiles)"); axs[1].set_ylabel("steps per second"); axs[1].set_title("Throughput (pipelined, 300 steps)")
     fig.suptitle(c["train_title"], fontsize=16, y=0.99)
     if bad: fig.text(0.5, 0.045, "Hatched = fails the parity gate: loss at step 300 differs by " + ", ".join(f"{par[k]:.1e} ({LAB[k]})" for k in cs if k in bad) + " from the other tools (limit 1e-6). Cause not investigated.", ha="center", fontsize=11.5, color="#8e1b1b")
-    footer(fig, meta, "300 measured steps after 20 warm-up"); fig.tight_layout(rect=(0, 0.08, 1, 0.95)); fig.savefig(out + ".png", dpi=200); fig.savefig(out + ".svg"); plt.close(fig); return True
+    footer(fig, meta, "after 20 warm-up steps", what="median over 300 steps"); fig.tight_layout(rect=(0, 0.08, 1, 0.95)); fig.savefig(out + ".png", dpi=200); fig.savefig(out + ".svg"); plt.close(fig); return True
 
 def summary_rows(recs, case):
     rows = []
