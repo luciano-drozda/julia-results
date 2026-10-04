@@ -78,17 +78,13 @@ Run `validate_corpus_gpu.jl` with integer arguments above the warp size (for exa
 - Single precision against PyTorch and JAX: the STADE float32 error equals the framework float32 error on all cases.
 - Limits stated in your code (additive writes only, different index expressions only) remain. Plain-assignment races are not covered. I did not test them.
 
-## Open item: JACC reduction omits one term (pre-existing, not related to the race)
-`stencil_loss_jacc` and the forward sweep of `stencil_loss_b_jacc` compute the loss for `n >= 32770` with:
-```julia
-__jgen_redval_2 = JACC.@parallel_reduce(range = div((i_n - 1) - 2, 1) + 1, (((i_x2, w)->w[i_x2] ^ 2))(w))
-```
-The source loop is `for i_x2 = 2:i_n-1`. The reduction index starts at 1, so the sum covers `w[1..n-2]` and misses `w[n-1]`.
-Observed loss error (Float64, JACC): 9.9e-7 at n = 40000. A CPU calculation of the missing term predicts 9.86e-7. At n = 1,000,000 the prediction is 6.76e-7 and the observation is about 7e-7.
-The CUDA reduction `sum(init = zero(eltype(view(w, 2:i_n - 1))), abs2, view(w, 2:i_n - 1))` is correct, and the JACC `jacc_kernel_*` loops that use `__jacc_i` with an explicit offset are correct.
-Likely fix: add the loop's lower bound minus one to the reduction index (`w[i_x2 + 1]`), or map the range in the lambda.
-Exposed kernels among the benchmark kernels: only `stencil_loss`. `dotprod`, `matvec_loss`, `transformer_loss`, `mpnn_loss`, and `unet_loss` reduce over loops that start at 1.
-Suggested test: a JACC primal of a reduction loop that starts at 2, with n above the reduction threshold (32768), compared with a sequential sum.
+## Open item: JACC idiomatic reduction uses the wrong elements, and has no zero-trip guard (pre-existing, not related to the race)
+Cause: `jgen_idiomatic_reduction_value` gets only the trip count. `JACC.@parallel_reduce` passes the index 1 to the trip count, and the closure uses it as the loop variable. The loop's lower bound, step, and direction are lost.
+For `stencil_loss` (`for i_x2 = 2:i_n-1`, n >= 32770) the generated code is `JACC.@parallel_reduce(range = div((i_n - 1) - 2, 1) + 1, (((i_x2, w)->w[i_x2] ^ 2))(w))`. It sums `w[1..n-2]` and misses `w[n-1]`. Observed loss error: 9.9e-7 at n = 40000. A CPU calculation predicts 9.86e-7 (6.76e-7 predicted and about 7e-7 observed at n = 1,000,000).
+Forced test (`reduction_threshold = 0`, job `diag-jacc-reduction2-*`): CUDA is exact. JACC is wrong for `2:i_n` (3.9e-3 at n = 100), `1:2:i_n` (9.5e-3), `i_n:-1:3` (9.4e-3), and `3:3:i_n` (4.5e-1).
+Second defect: with `reduction_threshold = 0` and a trip count of 0, JACC raises `Grid dimensions ... are not positive`. CUDA returns 0.
+Link to `validate_backend_agreement.jl`: the 30 failures (`cuda=N jacc=N+1`, "JACC launch with no zero-trip guard") are identical with the earlier and the fixed source. All 30 failing adjoint kernels contain `@parallel_reduce` in their JACC output. None of the 41 passing adjoint kernels does.
+A full prompt for the fix is in `PROMPT_fix_JACC_reduction.md`.
 
 ## Limitation: no GPU primal for a kernel that calls a kernel
 `stade_cuda_file` on a root kernel that calls another kernel (for example `mpnn_loss` calling `mpnn`) fails in `cgen_ingest` ("unsupported statement form `Expr(:call, ...)`"). The old and the fixed STADE behave the same. The adjoint path inlines the callee and works.
