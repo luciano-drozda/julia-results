@@ -1,0 +1,189 @@
+{
+ "stade_zip_sha256": "c5dd3d9904d0386e312cee31c4b05b3c92d4b87d73980a16667cec3d1f53278a",
+ "stade_src_sha256": "ca53962b474b087302fe9792249b07707ab1000f2d1f2ceffa9ad04c723dceab",
+ "stade_version": "0.4.4",
+ "flags": {
+  "keep_push_pop": false,
+  "fuse_ii_loops": true,
+  "reduction_threshold": 32768,
+  "precision": "Float64"
+ },
+ "files": {
+  "advection_b_cuda.jl": {
+   "bytes_original": 4204,
+   "bytes_stripped": 4131,
+   "lines_removed": 2,
+   "sha256_original": "7ed761d39c809bbc41bdf4e16bed21fc080140f5584bf0b377978a957e8f0cf1",
+   "sha256_stripped": "2a64a9bde5b51629f53b38d3a6f4140c55870fd4786ac114994a3028a9eb513b",
+   "kernels": 6
+  },
+  "advection_b_jacc.jl": {
+   "bytes_original": 3535,
+   "bytes_stripped": 3374,
+   "lines_removed": 3,
+   "sha256_original": "2c28beacdcaba106cb150a8f3eaec96d4de8ac79538103fe441f787cee555140",
+   "sha256_stripped": "22b78390d4c1e358e56b07a8d589ab08cd6ea6994c61f7f7d94bc0dbddd7711d",
+   "kernels": 6
+  },
+  "dotprod_b_cuda.jl": {
+   "bytes_original": 2265,
+   "bytes_stripped": 2192,
+   "lines_removed": 2,
+   "sha256_original": "7e5a92c71dae31cdf32c20e6b2a428a7c45ba463f132047eea3ed642b508cfdb",
+   "sha256_stripped": "e056cd6bb7342445df96ae6e124ed615e7d55554f475da822d1c9d6008acb097",
+   "kernels": 3
+  },
+  "dotprod_b_jacc.jl": {
+   "bytes_original": 2301,
+   "bytes_stripped": 2140,
+   "lines_removed": 3,
+   "sha256_original": "74bd035f71e5699450e9888a03134d6323aaf1f7a0a350a261fffd0bc18834c5",
+   "sha256_stripped": "44593fee34cc8ceb5968cc43ebc2a2d7c6fcd9e7b2fd575973a6dbc983281785",
+   "kernels": 5
+  },
+  "matvec_loss_b_cuda.jl": {
+   "bytes_original": 3828,
+   "bytes_stripped": 3755,
+   "lines_removed": 2,
+   "sha256_original": "5bde4f21cbeb0e2ef993274969d3eb6a6a4c4654c8da216f5e28aa345ce6f54d",
+   "sha256_stripped": "ccd8f10e3547854ff5a17221574359ef7f8194bd3c9cd6ec4f80eb9721efa390",
+   "kernels": 6
+  },
+  "matvec_loss_b_jacc.jl": {
+   "bytes_original": 3589,
+   "bytes_stripped": 3428,
+   "lines_removed": 3,
+   "sha256_original": "fc95a84d62e34c53c0b593617fb76608b7249132bc4f2b5f07552ce98c25b744",
+   "sha256_stripped": "dbfb08144d48e1592f68c377fe815cb47dc9d4239d69ccff34b90480e695b3c2",
+   "kernels": 8
+  },
+  "mlp1d_b_cuda.jl": {
+   "bytes_original": 6062,
+   "bytes_stripped": 5989,
+   "lines_removed": 2,
+   "sha256_original": "9764bf8a871cb276757d42a5825a1fa5191e344f22fbb67623213756fc34a792",
+   "sha256_stripped": "1701f50ebbfa2b2c21b23056909e49521ef762aaaa3269f85391b6eb9e92ccc8",
+   "kernels": 7
+  },
+  "mlp1d_b_jacc.jl": {
+   "bytes_original": 4758,
+   "bytes_stripped": 4597,
+   "lines_removed": 3,
+   "sha256_original": "8f8344c7f9effd921d68b0ab74cff46e809aa64ffa3024956d40ddf39c36a981",
+   "sha256_stripped": "2385ab3bbb5c8a354c7379111f9e6f1c0f457e86c1c4aef94e780dae8dd9e8d5",
+   "kernels": 7
+  },
+  "mpnn_cuda.jl": {
+   "bytes_original": 4380,
+   "bytes_stripped": 4307,
+   "lines_removed": 2,
+   "sha256_original": "d86344a0fbfecf2726838493ad87ed464e18dddabdf9af99b25dff45c97c124e",
+   "sha256_stripped": "6a2c8ccbace2f0026066ed1753a529805cd0755a594a08041862c705ec46f6ce",
+   "kernels": 4
+  },
+  "mpnn_jacc.jl": {
+   "bytes_original": 3919,
+   "bytes_stripped": 3758,
+   "lines_removed": 3,
+   "sha256_original": "b102bd78d8d4f114d4a43ab9bc68244fa50c0cdac42ee2ee9795960a5cf621ae",
+   "sha256_stripped": "58f874b17ff7989dc47cc9903fc42869140704540c358e268cc6c07aa7ae6a2a",
+   "kernels": 4
+  },
+  "mpnn_loss_b_cuda.jl": {
+   "bytes_original": 26779,
+   "bytes_stripped": 26706,
+   "lines_removed": 2,
+   "sha256_original": "7be79ce951de56cc1a361f168494fb4d6ef9c429a7385cb4b259310977fb0e63",
+   "sha256_stripped": "9c3e986b70ce17ee443abf2844e914591aaae0cff872ff2c524abad2f6d67281",
+   "kernels": 15
+  },
+  "mpnn_loss_b_jacc.jl": {
+   "bytes_original": 25261,
+   "bytes_stripped": 25100,
+   "lines_removed": 3,
+   "sha256_original": "47403d4a45d810596dc88d3d0281e178ce8b8580ab9f7fed6a202f3752f0d8eb",
+   "sha256_stripped": "7eae095de4ee9f6e18b1b2ace3e97d4dbaed9f88d770afbd635ab4106ed65bc4",
+   "kernels": 17
+  },
+  "stencil_loss_b_cuda.jl": {
+   "bytes_original": 3646,
+   "bytes_stripped": 3573,
+   "lines_removed": 2,
+   "sha256_original": "eac0e5b80b4a3eacb8c90ff5cc3b245362ce18103ccad0bb28f31a19a137bd3d",
+   "sha256_stripped": "055904b7cec6fa145f59e3377b794ad57789eb71d713b0ecb24522fb5bd027fd",
+   "kernels": 6
+  },
+  "stencil_loss_b_jacc.jl": {
+   "bytes_original": 3453,
+   "bytes_stripped": 3292,
+   "lines_removed": 3,
+   "sha256_original": "3c1576fbd60504f0655444ef46d952e627a10c47bed29db2e48c5ce04f6713d7",
+   "sha256_stripped": "5dd7c653ede1f6a1e2dd075631dd565af1b734f148c920bdc5515334452b155e",
+   "kernels": 8
+  },
+  "transformer_cuda.jl": {
+   "bytes_original": 11214,
+   "bytes_stripped": 11141,
+   "lines_removed": 2,
+   "sha256_original": "efb0c8b220cb4760498edbcffee9cfaad0cd5f26fa3c906d07b0de7bf1d70c88",
+   "sha256_stripped": "116f9428b25c950f56b7d90b75cc14b3cbc41cf0fa47c02f6dc53a288953dc58",
+   "kernels": 15
+  },
+  "transformer_jacc.jl": {
+   "bytes_original": 9478,
+   "bytes_stripped": 9317,
+   "lines_removed": 3,
+   "sha256_original": "f80f03da8047f28c97125c002511ab680856cdad8709dda623e467ec9274b3a9",
+   "sha256_stripped": "dc789b5bfacfcd1323a048f0de13b277e7b635e0a6ce8b9c90b1256e23a1676d",
+   "kernels": 15
+  },
+  "transformer_loss_b_cuda.jl": {
+   "bytes_original": 102880,
+   "bytes_stripped": 102807,
+   "lines_removed": 2,
+   "sha256_original": "3d97edb8fa81993a0c0e82650b619acb8fb88c490d1961bb3f1937ab77a8e7c1",
+   "sha256_stripped": "6be9498e531d03f348a3505ff368e634564ab38fb4a05dd43ff5e39ffe64fdbf",
+   "kernels": 47
+  },
+  "transformer_loss_b_jacc.jl": {
+   "bytes_original": 97620,
+   "bytes_stripped": 97459,
+   "lines_removed": 3,
+   "sha256_original": "025bbd6e07265d81fc01d1ab7940dee0d6e3f8cb2e20a1e17a7dee0f0ccdbb8d",
+   "sha256_stripped": "a31487885cabfd9e90fa7267447de30a583296ddfc0c4e23ca80c47aef07150f",
+   "kernels": 49
+  },
+  "unet_cuda.jl": {
+   "bytes_original": 33207,
+   "bytes_stripped": 33134,
+   "lines_removed": 2,
+   "sha256_original": "05d5200cb5411132112434fd3c7456c3d60066ccbdcc3941583f057dc26f1be5",
+   "sha256_stripped": "340f070116444293415b182cb6188fbcd86df064a49ebf19356010a21b01c45f",
+   "kernels": 49
+  },
+  "unet_jacc.jl": {
+   "bytes_original": 26849,
+   "bytes_stripped": 26688,
+   "lines_removed": 3,
+   "sha256_original": "45af49dbffc2ec77d6aa85049374fc998dc2df9abfc3f627b82402288324f85d",
+   "sha256_stripped": "f0d90bb1e974791936fc37ec65d9fe939ac24adc00023ba4c923c01bbb0174a9",
+   "kernels": 49
+  },
+  "unet_loss_b_cuda.jl": {
+   "bytes_original": 158870,
+   "bytes_stripped": 158797,
+   "lines_removed": 2,
+   "sha256_original": "8078dcaf2c490bf880e32de06c17a84a1a6e268d4789ce6a518466fb7b18d07d",
+   "sha256_stripped": "8d56594de41b11dc5aa448c6fe151d04d29c5ea528d72c299c96f3d7a878291e",
+   "kernels": 150
+  },
+  "unet_loss_b_jacc.jl": {
+   "bytes_original": 139703,
+   "bytes_stripped": 139542,
+   "lines_removed": 3,
+   "sha256_original": "2fb84a6617db92b6f16071d3cf3f3c88d7ea8ea309f2bfa427fa7d950892d040",
+   "sha256_stripped": "8c06ce19c7959dd94c9ff7e438829ed24f2d253a00a3534f8754c5e7b778624b",
+   "kernels": 152
+  }
+ }
+}

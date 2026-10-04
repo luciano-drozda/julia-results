@@ -1,0 +1,1 @@
+{"tasks": [{"model": "M1", "size": "tiny", "variant": "jit"}, {"model": "M2", "size": "tiny", "variant": "jit"}, {"model": "M3", "size": "tiny", "variant": "jit"}, {"model": "M4", "size": "tiny", "variant": "jit"}], "gate_tol": 1e-09}
