@@ -9,13 +9,19 @@ import numpy as np
 STADE = ("S-CUDA", "S-JACC", "S-CPU")
 FRAMEWORKS = ("P-EAGER", "P-GRAPH", "P-COMPILE", "J-JIT", "J-NN")
 DEFAULT_FW = ("P-EAGER", "J-JIT")
+# Decision D15 (c): these cases are not GPU-resident in the generated STADE code. They are reported separately, never ratioed.
+EXCLUDED_CASES = {"K5": "mlp1d: output-layer sum runs on the host below 32768 elements", "K6": "transformer: softmax and LayerNorm row loops run on the host"}
+EXCLUDED_MODELS = {"M1": "uses the mlp1d kernel (K5)", "M2": "uses the transformer kernel (K6)"}
+PREFLIGHT_JOBS = ("bench-j0",)
 
-def load_results(rawdir):
+def load_results(rawdir, include_preflight=False):
     out = []
     for p in sorted(glob.glob(os.path.join(rawdir, "**", "result.json"), recursive=True)):
         try: d = json.load(open(p))
         except Exception: continue
-        if isinstance(d, dict) and "records" in d: d["_path"] = p; out.append(d)
+        if isinstance(d, dict) and "records" in d:
+            if not include_preflight and d.get("job") in PREFLIGHT_JOBS: continue     # short protocol, tiny sizes: not comparison data
+            d["_path"] = p; out.append(d)
     return out
 
 def med(v): return float(np.median(v))
@@ -28,12 +34,14 @@ def summarize(vals):
 def key_of(r): return (r.get("case"), r.get("size"), r.get("mode"), r.get("contender"))
 
 def collect(results):
+    """Records of excluded cases are dropped here and listed by report() instead."""
     """time: key -> list of per-record medians (one per pass per job). mem, gate, train likewise."""
     time_, gate, mem, train = collections.defaultdict(list), collections.defaultdict(list), collections.defaultdict(list), collections.defaultdict(list)
     hosts = collections.defaultdict(set)
     for d in results:
         for r in d["records"]:
             k = r.get("kind")
+            if r.get("case") in EXCLUDED_CASES or r.get("model") in EXCLUDED_MODELS: continue
             if k == "time" and r.get("trial_us"):
                 time_[key_of(r)].append(med(r["trial_us"])); hosts[key_of(r)].add(d.get("host"))
             elif k == "gate": gate[key_of(r)].append({"max_err": r.get("max_err"), "passed": r.get("passed"), "det": r.get("determinism_err"), "job": d.get("job")})
@@ -121,9 +129,9 @@ def write_csv(path, rows):
         f.write(",".join(cols) + "\n")
         for r in rows: f.write(",".join("" if r.get(c) is None else str(r.get(c)) for c in cols) + "\n")
 
-def report(rawdir, outdir):
+def report(rawdir, outdir, include_preflight=False):
     os.makedirs(outdir, exist_ok=True)
-    results = load_results(rawdir); time_, gate, mem, train, hosts = collect(results)
+    results = load_results(rawdir, include_preflight); time_, gate, mem, train, hosts = collect(results)
     tt = time_table(time_); R = ratios(tt); mt = mem_table(mem); mr = mem_ratios(mt)
     write_csv(os.path.join(outdir, "time_summary.csv"), tt); write_csv(os.path.join(outdir, "ratios.csv"), R)
     write_csv(os.path.join(outdir, "memory_summary.csv"), mt); write_csv(os.path.join(outdir, "memory_ratios.csv"), mr)
@@ -139,6 +147,9 @@ def report(rawdir, outdir):
         tr_rows.append(dict(model=k[0], size=k[1], contender=k[2], sync_step_us_med=med(st) if st else None, throughput_steps_per_s=med(tp) if tp else None, n=len(recs),
                             loss_1=recs[0]["losses_at"].get("1"), loss_300=recs[0]["losses_at"].get("300")))
     write_csv(os.path.join(outdir, "training_summary.csv"), tr_rows)
+    exc = [dict(item=k, kind="case", reason=v) for k, v in EXCLUDED_CASES.items()] + [dict(item=k, kind="training model", reason=v) for k, v in EXCLUDED_MODELS.items()]
+    n_ex = sum(1 for d in results for r in d["records"] if r.get("case") in EXCLUDED_CASES or r.get("model") in EXCLUDED_MODELS)
+    write_csv(os.path.join(outdir, "excluded_cases.csv"), exc)
     # threshold-free performance profile (always)
     prof = {}
     for mode in ("primal", "adjoint"):
@@ -146,7 +157,7 @@ def report(rawdir, outdir):
             rs = [r["R"] for r in R if r["mode"] == mode and r["stade"] == s]
             if rs: prof[f"{mode}/{s}"] = performance_profile(rs)
     json.dump(prof, open(os.path.join(outdir, "performance_profile.json"), "w"))
-    summary = {"jobs": len(results), "time_keys": len(tt), "ratio_rows": len(R), "geomean_R": {}}
+    summary = {"jobs": len(results), "excluded_records_dropped": n_ex, "excluded": {**EXCLUDED_CASES, **EXCLUDED_MODELS}, "preflight_included": include_preflight, "time_keys": len(tt), "ratio_rows": len(R), "geomean_R": {}}
     for mode in ("primal", "adjoint"):
         for s in STADE:
             rs = [r["R"] for r in R if r["mode"] == mode and r["stade"] == s]
@@ -181,10 +192,10 @@ def report(rawdir, outdir):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(); sub = ap.add_subparsers(dest="cmd")
-    a = sub.add_parser("report"); a.add_argument("rawdir"); a.add_argument("outdir")
+    a = sub.add_parser("report"); a.add_argument("rawdir"); a.add_argument("outdir"); a.add_argument("--include-preflight", action="store_true")
     f = sub.add_parser("freeze-thresholds"); f.add_argument("outdir"); f.add_argument("--runtime", default="1.0,2.0,5.0"); f.add_argument("--memory", default="1.0,1.5")
     args = ap.parse_args()
-    if args.cmd == "report": print(json.dumps(report(args.rawdir, args.outdir), indent=1))
+    if args.cmd == "report": print(json.dumps(report(args.rawdir, args.outdir, args.include_preflight), indent=1))
     elif args.cmd == "freeze-thresholds":
         p, h = freeze(args.outdir, [float(x) for x in args.runtime.split(",")], [float(x) for x in args.memory.split(",")]); print("frozen:", p, h)
     else: ap.print_help()

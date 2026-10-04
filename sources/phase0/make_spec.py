@@ -140,6 +140,8 @@ TRAIN["models"][0]["sizes"].insert(0, dict(id="tiny", params=dict(n_h=16)))
 TRAIN["models"][1]["sizes"].insert(0, dict(id="tiny", params=tiny["K6"]))
 TRAIN["models"][2]["sizes"].insert(0, dict(id="tiny", params=tiny["K7"]))
 TRAIN["models"][3]["sizes"].insert(0, dict(id="tiny", params=tiny["K8"]))
-spec = {"seed_base": 12345, "families": fam, "cases": cases, "train": TRAIN}
+EXCL = {"cases": {"K5": "mlp1d: the generated code runs the output-layer sum on the host below 32768 elements", "K6": "transformer: the generated code runs the softmax and LayerNorm row loops on the host"},
+        "train_models": {"M1": "uses the mlp1d kernel (K5)", "M2": "uses the transformer kernel (K6)"}, "decision": "D15 (c)"}
+spec = {"seed_base": 12345, "families": fam, "cases": cases, "train": TRAIN, "excluded": EXCL}
 json.dump(spec, open("lib/cases_spec.json", "w"), indent=1)
 print("families:", list(fam), "| cases:", [(c["id"], len(c["sizes"])) for c in cases])

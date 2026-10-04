@@ -27,10 +27,17 @@ for j, (hostn, f) in enumerate((("n1", 1.0), ("n2", 1.02))):
     recs.append(dict(kind="mem", case="K1", size="n", mode="adjoint", contender="S-CUDA", M_A=2000, M_B=2500, M_C=2100))
     recs.append(dict(kind="mem", case="K1", size="n", mode="adjoint", contender="P-EAGER", M_A=1000, M_B=1500, M_C=1100))
     recs.append(dict(kind="mem", case="K1", size="n", mode="adjoint", contender="J-JIT", M_A=1800, M_B=1900, M_C=1850))
-    recs.append(dict(kind="train", model="M1", size="s", contender="S-CUDA", sync_step_us=[100.0] * 300, throughput_steps_per_s=9000.0, losses_at={"1": 1.0, "300": 0.5}))
+    recs.append(dict(kind="train", model="M3", size="s", contender="S-CUDA", sync_step_us=[100.0] * 300, throughput_steps_per_s=9000.0, losses_at={"1": 1.0, "300": 0.5}))
     put(f"jobA{j}", job(f"jobA{j}", recs, hostn))
 
+# an excluded case (K5) and a preflight job must be ignored by the comparison
+put("jobPre", job("bench-j0", [trec("K1", "n", "adjoint", c, m, seed=9) for c, m in (("P-EAGER", 1), ("S-CUDA", 1000))]))
+put("jobExcl", job("jobExcl", [trec("K5", "n", "adjoint", c, m, seed=7) for c, m in (("P-EAGER", 10), ("S-CUDA", 5000))] + [dict(kind="train", model="M1", size="s", contender="S-CUDA", sync_step_us=[1.0] * 300, throughput_steps_per_s=1.0, losses_at={"1": 1.0})]))
 s = A.report(raw, out)
+assert s["excluded_records_dropped"] >= 3, s["excluded_records_dropped"]
+assert not any(r["case"] == "K5" for r in A.ratios(A.time_table(A.collect(A.load_results(raw))[0]))), "an excluded case produced a ratio"
+assert "K5" in open(os.path.join(out, "excluded_cases.csv")).read()
+trc = open(os.path.join(out, "training_summary.csv")).read(); assert "M1" not in trc and "M3" in trc, trc     # the excluded training model is dropped, the included one stays
 R = {(r["case"], r["mode"], r["stade"]): r for r in json.load(open(os.path.join(out, "performance_profile.json"))) and A.ratios(A.time_table(A.collect(A.load_results(raw))[0]))}
 def close(a, b, tol=0.05): return abs(a - b) / b < tol
 assert close(R[("K1", "adjoint", "S-CUDA")]["R"], 70 / 80), R[("K1", "adjoint", "S-CUDA")]
@@ -54,6 +61,6 @@ geo = s["geomean_R"]["adjoint/S-CUDA"]; assert close(geo, math.sqrt(70 / 80 * 3.
 th = json.load(open(os.path.join(out, "thresholds.json"))); th["runtime"]["competitive"] = 3.0; json.dump(th, open(os.path.join(out, "thresholds.json"), "w"), indent=1)
 try: A.report(raw, out); raise AssertionError("tampering was not detected")
 except SystemExit as e: assert "does not match" in str(e)
-tr = open(os.path.join(out, "training_summary.csv")).read(); assert "M1" in tr and "9000" in tr
+tr = open(os.path.join(out, "training_summary.csv")).read(); assert "M3" in tr and "9000" in tr
 print("analysis tests passed:", {"ratios checked": 8, "bands": b["adjoint/S-CUDA"], "geomean_R": round(geo, 3), "unstable flagged": 1, "tamper detected": True})
 shutil.rmtree(tmp)

@@ -3000,5 +3000,16 @@
     ]
    }
   ]
+ },
+ "excluded": {
+  "cases": {
+   "K5": "mlp1d: the generated code runs the output-layer sum on the host below 32768 elements",
+   "K6": "transformer: the generated code runs the softmax and LayerNorm row loops on the host"
+  },
+  "train_models": {
+   "M1": "uses the mlp1d kernel (K5)",
+   "M2": "uses the transformer kernel (K6)"
+  },
+  "decision": "D15 (c)"
  }
 }

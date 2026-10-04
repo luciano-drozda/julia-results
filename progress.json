@@ -1,5 +1,5 @@
 {
- "plan_version": "2.10",
+ "plan_version": "2.11",
  "phase0": "complete, awaiting user review",
  "stade": {
   "version": "0.4.4",
@@ -10,166 +10,126 @@
  "jobs": {
   "bench-j0": {
    "status": "pending",
-   "payload_sha256": "798ab0be87d4e9117e4574a674bba1b78f33fed5db5e57b6cedf1ce3659d7715"
+   "payload_sha256": "d59e82fc380896d27fe0727202405a0bd4003026407750a293f7c0c58303c4b9"
   },
   "bench-j1a-r1": {
    "status": "pending",
-   "payload_sha256": "b4cddc6c5015a5171598dad7ae6335eef76afe9e16d3ec80434b12fda3d5235f"
+   "payload_sha256": "6d57f9b06bba9ea59d6ef0f90bf9bbe47c126a940fb995c1ae04fb313a24f975"
   },
   "bench-j1a-r2": {
    "status": "pending",
-   "payload_sha256": "956911369d1c66c165df9e3ecfc767e928b01d344d2207d8ce65db2fce3086c3"
+   "payload_sha256": "8cbdbf02723dc00687f0937afec923fb3e84fbb9c84f798df8b5ca2c448851c1"
   },
   "bench-j1a-r3": {
    "status": "pending",
-   "payload_sha256": "da81b719ca3c3f466416b58e96d4baff06fe88472b67e7d2b6f6b3b1f7cb6c08"
+   "payload_sha256": "0a82ef135f60a2fcb192ef701957c703f62daefecfc164bdd53eedca0cef5a6c"
   },
   "bench-j1b-r1": {
    "status": "pending",
-   "payload_sha256": "76a4c830126538f6dc71fc5b202dba6468381d925373ac6d4119f28070e367a3"
+   "payload_sha256": "1f1cb7d2283c0815d99f8be696a455445cc47ec3a5144b8a98aca3d2448b9a89"
   },
   "bench-j1b-r2": {
    "status": "pending",
-   "payload_sha256": "30c430e4d7a09b7a7edfd01949d8fd5fb86de0de1b5377d9fd2d613053eba48a"
+   "payload_sha256": "6a7d60665e6ff5c8761351afe02caebd621e4e8cb6955698169244dbd6385175"
   },
   "bench-j1b-r3": {
    "status": "pending",
-   "payload_sha256": "698094fda5e9579e8140d32937dabc4ad853ea63d4eca5fba1e5f96f86eb8f13"
+   "payload_sha256": "ba666888178ce91edd7a699d0fe4b9def380b861be64103578aaa9c0d43f103c"
   },
   "bench-j2a-r1": {
    "status": "pending",
-   "payload_sha256": "d8a5a433e8e5635d929f58ba7434d1944090960282bdd12fca1f3da43c6833f9"
+   "payload_sha256": "774924e08675ae9f83b433b3b0e7dfaf78add4a75396433304802662e13029a7"
   },
   "bench-j2a-r2": {
    "status": "pending",
-   "payload_sha256": "182d6b1d144db66d701aeaa7f4aed5acdf3ea28bb4ea27ecad5890f54d289dbd"
+   "payload_sha256": "a6f53e07dc10e947c2cde9ada8084725b1dbf1db23adfae009ca87a22879cb59"
   },
   "bench-j2a-r3": {
    "status": "pending",
-   "payload_sha256": "da7a1c83f601180ccc8b4ab061e660d54870d7897e480f2f13ab2a8ead51a88c"
+   "payload_sha256": "5d145f3a776bf94f9134a5494b682ea5641f84c50c1316723fdcc55b9a72c139"
   },
   "bench-j2b-r1": {
    "status": "pending",
-   "payload_sha256": "496ff90b011f568fe82cb8da28b825c6bda15a5bf57b17b6f8a9d25d41ce5359"
+   "payload_sha256": "d4febc6c8178ca61f40ec75817272b9b0cc354e51d281fa8a19d9a0bde60ceab"
   },
   "bench-j2b-r2": {
    "status": "pending",
-   "payload_sha256": "58c15991a0224e26de4ba299c862d6a59fc222851462d1a4d8c57cfc7dd012f4"
+   "payload_sha256": "6a344c71dc25f42737ce200822c33a21cbc0b9ebb6d57394d567898419a516c4"
   },
   "bench-j2b-r3": {
    "status": "pending",
-   "payload_sha256": "61409bc5971cc27557877221af58473a798854d93c146b776326cac0beb95d44"
+   "payload_sha256": "b35cf6ccd0f994145a597b957d58e8ccf66130f2df97945e4a8f1cee0ebec1a4"
   },
-  "bench-j3a-r1": {
+  "bench-j3-r1": {
    "status": "pending",
-   "payload_sha256": "ef85cf9931bf7c96684e03c21722d8e704ce368792643f61f00a0317936147dd"
+   "payload_sha256": "cd53e2167d4daa6b9f092022e33505cfdf606ebd4df011676361166363d6ac64"
   },
-  "bench-j3a-r2": {
+  "bench-j3-r2": {
    "status": "pending",
-   "payload_sha256": "1d706f5e0d9f3100ece165aad0bddb789542ee5bf475c091333b7bf386a3bc35"
+   "payload_sha256": "1e79c240cb6474ae3248595ca156d718a67839d4e6c4c475b6bf9f4264dabe88"
   },
-  "bench-j3a-r3": {
+  "bench-j3-r3": {
    "status": "pending",
-   "payload_sha256": "c8d825d6b676e95716219fa795e9e37f2406b86833fee799b962fc92a55bcdcd"
-  },
-  "bench-j3b-r1": {
-   "status": "pending",
-   "payload_sha256": "b8432ddb25fe57b1bdb055bc4cfce60768797e4e3c0052d58267c36c479d66a7"
-  },
-  "bench-j3b-r2": {
-   "status": "pending",
-   "payload_sha256": "c5da689baa7ede7d9d6bdd9c3a6397137278c202379d086ad3d5575f442ea1c7"
-  },
-  "bench-j3b-r3": {
-   "status": "pending",
-   "payload_sha256": "679201568c06b893e2d605f42138928cff63a891444b9184c95cd86587da5909"
-  },
-  "bench-j4-r1": {
-   "status": "pending",
-   "payload_sha256": "e90b5c843d4b40db5df23ede478979213ff6ccae0a91f9af1d1f4e6b570564b3"
-  },
-  "bench-j4-r2": {
-   "status": "pending",
-   "payload_sha256": "36063f971c3646cacaf63fa1852d9a230bd31ac462434b11d72d72302d4f4ae1"
-  },
-  "bench-j4-r3": {
-   "status": "pending",
-   "payload_sha256": "edb2de5183ffed41979a5290a8100266e2779082b3391c1ec1af78ad2db3c5be"
+   "payload_sha256": "5a835c9510035554576421c56282345943b25e89dbda8ae7a94bd1d452bbbdc2"
   },
   "bench-j5a-r1": {
    "status": "pending",
-   "payload_sha256": "34fe51c0097c54ef7ffb92b692469d5b937ab3466e8aa683bc44d55f3649367a"
+   "payload_sha256": "10fa7a175f93e5e1b2b361459cb18827c59496b294eec008488e276afc835460"
   },
   "bench-j5a-r2": {
    "status": "pending",
-   "payload_sha256": "60fc7740e14eefe2b144c91e8bff5c4ac8ef58f6ae13e2158db645f5fbaaa0d3"
+   "payload_sha256": "b20de907f1ab12bb4859727a20f32611c78a3bbce6366911fd92fd6b93ee80fb"
   },
   "bench-j5a-r3": {
    "status": "pending",
-   "payload_sha256": "66991c5ae0a2c1fe9eff145bae789fd6b35adcac66dde640847b9fbcb4660058"
+   "payload_sha256": "7e69958e1bf13d16fe66ebddfddf9717062c9f32b717aa82c6c50f811300286a"
   },
   "bench-j5b-r1": {
    "status": "pending",
-   "payload_sha256": "1a34a1bd223e1d79b2a89fd067cb44e8c488a0d9a8f6155d045326e32afe7ce1"
+   "payload_sha256": "850feb3b096ec40c6c4ed9260de5adb4237b798c8c4486fc9413aabef8b5eb5d"
   },
   "bench-j5b-r2": {
    "status": "pending",
-   "payload_sha256": "5953e4836b3d1bd212c5767294ddc2d7d96ae26e0405c2ecc06110d49f578f46"
+   "payload_sha256": "ffc2bafe55f57929c2c17eb1eb90253b17f6213394785a880f6f4214fc657094"
   },
   "bench-j5b-r3": {
    "status": "pending",
-   "payload_sha256": "028d6fca530ea027f92e0fba7cc4974aec6985284e0d26c1d4bd841053a33a70"
+   "payload_sha256": "049a548d2d1cdd9f195eab2a2c4460165dc8ccdec4dba86502976bce8e4f187d"
   },
-  "bench-j6a-r1": {
+  "bench-j6-r1": {
    "status": "pending",
-   "payload_sha256": "7a837dc3cf4fdc246c92f7b7cdeaddf2ce001babe50f597850470d60a974b442"
+   "payload_sha256": "34fdbd53f92765d31f4299d41319fbef37586b7e77d490c6b99b5d4d14ad7c55"
   },
-  "bench-j6a-r2": {
+  "bench-j6-r2": {
    "status": "pending",
-   "payload_sha256": "1f6f548f56af11da42161b75e666a2dbd9647af5ce1cbc229d390d1f9ab5c6dc"
+   "payload_sha256": "264b879558ff6a24cf91a2274fc820e4b461b36061bfc8bb415967a1bd929111"
   },
-  "bench-j6a-r3": {
+  "bench-j6-r3": {
    "status": "pending",
-   "payload_sha256": "967606d598ca2d63ae83fbb955f95f79cbb7ac51ef980151d53b713b2db03eea"
-  },
-  "bench-j6b-r1": {
-   "status": "pending",
-   "payload_sha256": "040e7a46b3ef3c9556fcf43c0668210fad6de3bb2f66dd50de7f471e1cd8c8b9"
-  },
-  "bench-j6b-r2": {
-   "status": "pending",
-   "payload_sha256": "a1895c8d46ec03da6813a790a3ae5ea0b64de80cb1ec0bcb214242b8a75e1de6"
-  },
-  "bench-j6b-r3": {
-   "status": "pending",
-   "payload_sha256": "1549e5c5a76a96e5f697ef80e51806a7ed8d0168a9b53484cfe6661b3b3b72d4"
+   "payload_sha256": "04f5f773f0fbdcdf20916e6640d7b8dbef0efbdb8084e0b871f9718ecb2b865b"
   },
   "bench-j7a-r1": {
    "status": "pending",
-   "payload_sha256": "2c62be740bd965338379061e901dcc2e04e79b010b69de838cf7b29547d3cf86"
+   "payload_sha256": "de6adc5742366da6d97a36e41983c44634089da0243ab75e5e953eec23fe2665"
   },
   "bench-j7a-r2": {
    "status": "pending",
-   "payload_sha256": "c0379c69b44daf42c6aca62a2378fa08e8e7231885c98c54e8c8853577d90b30"
+   "payload_sha256": "d7e65113be31f29cf6d9dc5454b35319e9b9343c67e2ac94f437bdd715e2a1c8"
   },
   "bench-j7b-r1": {
    "status": "pending",
-   "payload_sha256": "3926e3cf79db2510a0ea4defa4675f96018aad7bbd60a701e519781c4784607a"
+   "payload_sha256": "024e682f80dad57f271c32abf1838fdc045b8eea67301dbea325f14d2c49dbcb"
   },
   "bench-j7b-r2": {
    "status": "pending",
-   "payload_sha256": "62edf3531a6020679d6c19d1313bb96a1877dce3db40fdb3ca055cbde87a2245"
+   "payload_sha256": "2f49d22deca6eb61b5bfafcfa59b87ebe98e8d24b690f8b1f57e9622a5ced8bf"
   }
  },
  "order_rule": "repeat 1: P,S,J / repeat 2: J,S,P / repeat 3: P,J,S (a Python tool always first: it writes the gate reference)",
  "slurm_time_limit_min": 15,
  "job_budget_s": 800,
- "blocked_until_decision": {
-  "bench-j3a-*": "D15",
-  "bench-j4-*": "D15"
- },
  "notes": [
-  "K5 below 32768 and K6 run sequential loops on the host (section 2.5)",
-  "J0 does not depend on D15"
+  "D15 (c): K5, K6, M1, M2 excluded from the STADE comparison (not GPU-resident); J0 keeps small K5/K6 tasks as evidence only",
+  "J0 submission waits for the owner's explicit go"
  ]
 }
