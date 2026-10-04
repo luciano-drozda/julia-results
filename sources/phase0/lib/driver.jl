@@ -112,6 +112,11 @@ function stade_task!(recs, t, ref, BE)
                 variant = String(get(t, "stade_variant", "")); file = code_file(fam, beK, mode; variant = variant)
                 (mod, code, load_s) = get_module(file)
                 st = setup!(be, mod, code, fam, arrays, scalars, ints, Symbol(mode))
+                if beK in ("cuda", "jacc")      # every array of the call must live on the GPU
+                    allgpu = all(v -> v isa CuArray, values(st.dev)) && all(v -> v isa CuArray, values(st.shadow))
+                    allgpu || error("device arrays are not all CuArray: " * join(unique(string.(typeof.(values(st.dev)))), ", "))
+                    base["device_array_type"] = string(typeof(first(values(st.dev))))
+                end
                 t0 = time_ns(); step!(st); be.sync(); first_s = (time_ns() - t0) * 1e-9
                 gate_ok = true
                 key = t["case"] * "/" * t["size"] * "/" * mode
@@ -122,11 +127,11 @@ function stade_task!(recs, t, ref, BE)
                 gate_ok = mx === nothing || mx <= TOL
                 det = mode == "adjoint" ? g["determinism_err"] : nothing
                 push!(recs, merge(base, Dict("kind" => "gate", "sigs" => flat, "errs_vs_ref" => errs, "max_err" => mx,
-                                              "passed" => mx === nothing ? nothing : gate_ok, "determinism_err" => det, "first_call_s" => first_s, "load_s" => load_s)))
+                                              "passed" => mx === nothing ? nothing : gate_ok, "determinism_err" => det, "gate_call_seconds" => (mode == "adjoint" ? g["call_seconds"] : nothing), "first_call_s" => first_s, "load_s" => load_s)))
                 if "time" in modes
                     if gate_ok
-                        tm = time_protocol(() -> step!(st), be; warmup = 10, trials = 30, tmin = 0.05)
-                        tm["parts"] = mode == "adjoint" ? time_parts(st, be) : nothing
+                        tm = time_protocol(() -> step!(st), be; warmup = 10, trials = 30, tmin = 0.05, max_call_s = Float64(get(JOB, "max_call_s", 30.0)))
+                        tm["parts"] = (mode == "adjoint" && !get(tm, "single_sample", false)) ? time_parts(st, be) : nothing
                         push!(recs, merge(base, tm, Dict("kind" => "time", "first_call_s" => first_s)))
                     else
                         push!(recs, merge(base, Dict("kind" => "skipped", "reason" => "failed the correctness gate", "max_err" => mx)))

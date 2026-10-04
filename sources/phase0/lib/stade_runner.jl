@@ -239,31 +239,38 @@ function gate_primal(s::State)
 end
 
 function gate_adjoint(s::State; repeats = 5)
-    names = grad_names(s.fam, "all"); res = Dict{String,Any}(); reps = Any[]
-    for r in 1:repeats
-        step!(s); s.be.sync()
-        grads = Dict{String,Any}()
-        sg = scalar_grads(s)
+    names = grad_names(s.fam, "all"); reps = Any[]; r = 0; nrep = repeats
+    while r < nrep
+        r += 1
+        t0 = time_ns(); step!(s); s.be.sync(); dt = (time_ns() - t0) * 1e-9
+        if r == 1                                             # slow call: check determinism fewer times (host-driven code can take minutes)
+            dt > 30.0 && (nrep = 1)
+            dt > 5.0 && dt <= 30.0 && (nrep = min(nrep, 2))
+        end
+        grads = Dict{String,Any}(); sg = scalar_grads(s)
         for nm in names
             if haskey(s.shadow, nm); grads[nm] = sigj(s.shadow[nm])
             elseif haskey(sg, nm); grads[nm] = sigj([sg[nm]])
             end
         end
         lossn = s.fam["loss"]
-        push!(reps, Dict("grads" => grads, "loss" => lossn === nothing ? nothing : sigj(s.dev[lossn])))
+        push!(reps, Dict("grads" => grads, "loss" => lossn === nothing ? nothing : sigj(s.dev[lossn]), "seconds" => dt))
     end
     first = reps[1]; det = 0.0
-    for r in reps[2:end]
-        for (k, v) in r["grads"]; det = max(det, sig_err(v, first["grads"][k])); end
-        first["loss"] === nothing || (det = max(det, sig_err(r["loss"], first["loss"])))
+    for rr in reps[2:end]
+        for (k, v) in rr["grads"]; det = max(det, sig_err(v, first["grads"][k])); end
+        first["loss"] === nothing || (det = max(det, sig_err(rr["loss"], first["loss"])))
     end
-    return Dict("loss" => first["loss"], "grads" => first["grads"], "determinism_err" => det, "repeats" => repeats)
+    return Dict("loss" => first["loss"], "grads" => first["grads"], "determinism_err" => length(reps) > 1 ? det : nothing, "repeats" => length(reps), "call_seconds" => first["seconds"])
 end
 
 # ------------------------------------------------------------------ timing
-function time_protocol(f!::Function, be::Backend; warmup = 10, trials = 30, tmin = 0.05, kmax = 1000, nevent = 30)
+function time_protocol(f!::Function, be::Backend; warmup = 10, trials = 30, tmin = 0.05, kmax = 1000, nevent = 30, max_call_s = 30.0)
     f!(); be.sync()                                            # first call
     t0 = time_ns(); f!(); be.sync(); tq = (time_ns() - t0) * 1e-9
+    if tq > max_call_s       # one call is too slow for the job budget: keep this single sample and say so
+        return Dict("trial_us" => [tq * 1e6], "event_us" => Float64[], "K" => 1, "trials" => 1, "warmup" => 1, "reduced_protocol" => true, "single_sample" => true)
+    end
     reduced = false
     if tq > 0.1; warmup = min(warmup, 2); reduced = true; end
     if tq > 0.5; trials = clamp(round(Int, 15 / tq), 5, trials); nevent = min(nevent, 5); reduced = true; end

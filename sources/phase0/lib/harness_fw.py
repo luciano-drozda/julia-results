@@ -64,6 +64,10 @@ def build(fam, params, mode):
     for nm, v in scalars.items():
         if nm == "eps": continue
         P[nm] = to_dev(np.array(v, dtype=np.float64))
+    if not ALLOW_CPU:    # every array of the call must live on the GPU
+        if FW == "torch": bad = [n for n, v in P.items() if not v.is_cuda]
+        else: bad = [n for n, v in P.items() if list(v.devices())[0].platform not in ("gpu", "cuda")]
+        if bad: raise RuntimeError("arrays not on the GPU: " + ",".join(bad))
     return P, c, arrays
 
 # ---------------------------------------------------------------- signatures
