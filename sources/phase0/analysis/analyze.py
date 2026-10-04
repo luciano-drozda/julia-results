@@ -12,7 +12,7 @@ DEFAULT_FW = ("P-EAGER", "J-JIT")
 # Decision D15 (c): these cases are not GPU-resident in the generated STADE code. They are reported separately, never ratioed.
 EXCLUDED_CASES = {"K5": "mlp1d: output-layer sum runs on the host below 32768 elements", "K6": "transformer: softmax and LayerNorm row loops run on the host"}
 EXCLUDED_MODELS = {"M1": "uses the mlp1d kernel (K5)", "M2": "uses the transformer kernel (K6)"}
-PREFLIGHT_JOBS = ("bench-j0",)
+PREFLIGHT_JOBS = ("bench-j0", "bench-j0m")
 
 def load_results(rawdir, include_preflight=False):
     out = []

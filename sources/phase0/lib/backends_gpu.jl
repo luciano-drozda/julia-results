@@ -2,9 +2,9 @@
 function make_backends()
     be = Dict{String,Backend}()
     be["cuda"] = Backend("cuda", x -> CuArray(x), () -> CUDA.synchronize(), f -> CUDA.@elapsed(f()),
-                         () -> Int(CUDA.available_memory()), () -> (GC.gc(); CUDA.reclaim(); nothing), "cuda")
+                         () -> Int(CUDA.free_memory()), () -> (GC.gc(); CUDA.reclaim(); nothing), "cuda")
     be["jacc"] = Backend("jacc", x -> JACC.array(x), () -> CUDA.synchronize(), f -> CUDA.@elapsed(f()),
-                         () -> Int(CUDA.available_memory()), () -> (GC.gc(); CUDA.reclaim(); nothing), "jacc")
+                         () -> Int(CUDA.free_memory()), () -> (GC.gc(); CUDA.reclaim(); nothing), "jacc")
     return be
 end
 

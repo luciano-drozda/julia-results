@@ -198,7 +198,7 @@ def memory_probe(fam, params, mode, variant, scope):
     """Footprint of one gradient evaluation (or forward). Runs in the current process; see the plan section 8.2."""
     rec = {}
     gc.collect()
-    if FW == "torch" and DEV == "cuda": torch.cuda.empty_cache(); sync(); rec["free0"] = gpu_free(); rec["alloc_base"] = torch.cuda.memory_allocated()
+    if FW == "torch" and DEV == "cuda": torch.cuda.empty_cache(); sync(); rec["free0"] = gpu_free(); rec["alloc_base"] = torch.cuda.memory_allocated(); rec["reserved_base"] = torch.cuda.memory_reserved()
     if FW == "jax": rec["jax0"] = jax_stats()
     P, c, _ = build(fam, params, mode)
     if mode == "adjoint": run, grads, gn = make_adjoint(fam, P, c, variant, scope)
@@ -208,14 +208,20 @@ def memory_probe(fam, params, mode, variant, scope):
     inputs = sum(nbytes(v) for v in P.values())
     rec["inputs_bytes"] = inputs
     if FW == "torch" and DEV == "cuda":
-        rec["alloc_before"] = torch.cuda.memory_allocated()
+        rec["alloc_before"] = torch.cuda.memory_allocated(); rec["reserved_before_run"] = torch.cuda.memory_reserved()
         torch.cuda.reset_peak_memory_stats(); out = run(); sync()
-        rec["peak_alloc"] = torch.cuda.max_memory_allocated(); rec["alloc_after"] = torch.cuda.memory_allocated()
+        rec["peak_alloc"] = torch.cuda.max_memory_allocated(); rec["alloc_after"] = torch.cuda.memory_allocated(); rec["peak_reserved"] = torch.cuda.max_memory_reserved()
         rec["free1"] = gpu_free(); torch.cuda.empty_cache(); rec["free2"] = gpu_free()
-        rec["M_A"] = rec["peak_alloc"]; rec["M_B"] = rec["free0"] - rec["free1"]; rec["M_C"] = rec["free0"] - rec["free2"]
+        rec["M_A"] = rec["peak_alloc"] - rec["alloc_base"]       # net of allocations that existed before this probe (library handles, leftovers)
+        rec["M_A_absolute"] = rec["peak_alloc"]
+        rec["M_B"] = rec["peak_reserved"] - rec["reserved_base"]      # reserved by the caching allocator above the baseline
+        rec["M_B_driver"] = rec["free0"] - rec["free1"]; rec["M_C"] = rec["free0"] - rec["free2"]
     elif FW == "jax":
         out = run(); block(out); rec["jax1"] = jax_stats()
-        rec["M_A"] = rec["jax1"].get("peak_bytes_in_use"); rec["M_B"] = rec["jax1"].get("pool_bytes")
+        j0b = (rec.get("jax0") or {}).get("bytes_in_use") or 0; j0p = (rec.get("jax0") or {}).get("pool_bytes") or 0
+        rec["M_A_absolute"] = rec["jax1"].get("peak_bytes_in_use")
+        rec["M_A"] = (rec["M_A_absolute"] - j0b) if rec["M_A_absolute"] is not None else None      # net of the bytes in use before the probe (the peak is monotone: see section 8.2)
+        rec["M_B"] = (rec["jax1"].get("pool_bytes") - j0p) if rec["jax1"].get("pool_bytes") is not None else None
         try:
             if mode == "adjoint":
                 G = {n: P[n] for n in L.grad_names(fam, scope)}; R = {n: v for n, v in P.items() if n not in G}

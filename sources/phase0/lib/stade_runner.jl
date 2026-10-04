@@ -256,10 +256,11 @@ function gate_adjoint(s::State; repeats = 5)
         lossn = s.fam["loss"]
         push!(reps, Dict("grads" => grads, "loss" => lossn === nothing ? nothing : sigj(s.dev[lossn]), "seconds" => dt))
     end
-    first = reps[1]; det = 0.0
+    first = reps[1]; det = 0.0; azero = String.(get(s.fam, "analytic_zero", String[]))
+    flat_of(rr) = (f = Dict{String,Any}(rr["grads"]); rr["loss"] === nothing || (f["loss"] = rr["loss"]); f)
     for rr in reps[2:end]
-        for (k, v) in rr["grads"]; det = max(det, sig_err(v, first["grads"][k])); end
-        first["loss"] === nothing || (det = max(det, sig_err(rr["loss"], first["loss"])))
+        errs = compare_flat(flat_of(rr), flat_of(first), azero)       # same rule as the gate: analytically zero gradients are compared by magnitude
+        isempty(errs) || (det = max(det, maximum(values(errs))))
     end
     return Dict("loss" => first["loss"], "grads" => first["grads"], "determinism_err" => length(reps) > 1 ? det : nothing, "repeats" => length(reps), "call_seconds" => first["seconds"])
 end
