@@ -1,0 +1,25 @@
+stencil_3pt [racy/cuda]                ok  3 write(s), atomic=true
+stencil_3pt [racy/jacc]                ok  3 write(s), atomic=true
+shift_2pt [racy/cuda]                  ok  2 write(s), atomic=true
+shift_2pt [racy/jacc]                  ok  2 write(s), atomic=true
+hoisted_offset [racy/cuda]             ok  2 write(s), atomic=true
+hoisted_offset [racy/jacc]             ok  2 write(s), atomic=true
+single_site [disjoint/cuda]            ok  1 write(s), atomic=false
+single_site [disjoint/jacc]            ok  1 write(s), atomic=false
+even_odd [disjoint/cuda]               ok  2 write(s), atomic=false
+even_odd [disjoint/jacc]               ok  2 write(s), atomic=false
+row_private_2d [disjoint/cuda]         ok  2 write(s), atomic=false
+row_private_2d [disjoint/jacc]         ok  2 write(s), atomic=false
+components [disjoint/cuda]             ok  2 write(s), atomic=false
+components [disjoint/jacc]             ok  2 write(s), atomic=false
+col_2d [plan]                          ok  flagged=true
+components_2d [plan]                   ok  flagged=false
+row_2d [plan]                          ok  flagged=false
+stride2_2d [plan]                      ok  flagged=false
+stencil_loss [corpus/cuda]             ok  3 atomic write(s)
+stencil_loss [corpus/jacc]             ok  3 atomic write(s)
+advection [corpus/cuda]                ok  2 atomic write(s)
+advection [corpus/jacc]                ok  2 atomic write(s)
+sabotage [guard fires]                 ok  guard is load-bearing
+
+23/23 checks passed

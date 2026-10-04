@@ -1,0 +1,14 @@
+{
+ "stencil_loss_b_cuda_f64.jl": "055904b7cec6fa145f59e3377b794ad57789eb71d713b0ecb24522fb5bd027fd",
+ "stencil_loss_b_cuda_f32.jl": "73b2ea853317646a163bdef7ba839506d589743290927a2bcd5b23b5b413b9b4",
+ "stencil_loss_b_jacc_f64.jl": "5dd7c653ede1f6a1e2dd075631dd565af1b734f148c920bdc5515334452b155e",
+ "stencil_loss_b_jacc_f32.jl": "99326836710145321362a574c2ff494906c22131631fe6070d1364a87cec4155",
+ "matvec_loss_b_cuda_f64.jl": "ccd8f10e3547854ff5a17221574359ef7f8194bd3c9cd6ec4f80eb9721efa390",
+ "matvec_loss_b_cuda_f32.jl": "ccd8f10e3547854ff5a17221574359ef7f8194bd3c9cd6ec4f80eb9721efa390",
+ "matvec_loss_b_jacc_f64.jl": "dbfb08144d48e1592f68c377fe815cb47dc9d4239d69ccff34b90480e695b3c2",
+ "matvec_loss_b_jacc_f32.jl": "dbfb08144d48e1592f68c377fe815cb47dc9d4239d69ccff34b90480e695b3c2",
+ "mlp1d_b_cuda_f64.jl": "1701f50ebbfa2b2c21b23056909e49521ef762aaaa3269f85391b6eb9e92ccc8",
+ "mlp1d_b_cuda_f32.jl": "7534441ed389c9de34889d511250653ffe4f7f047c9c1d5eb9b5fb28c45b6262",
+ "mlp1d_b_jacc_f64.jl": "2385ab3bbb5c8a354c7379111f9e6f1c0f457e86c1c4aef94e780dae8dd9e8d5",
+ "mlp1d_b_jacc_f32.jl": "5a9a0bd00339f88279c0e2814917f7471ee47a30501e3290a4efd20f6c1744a4"
+}

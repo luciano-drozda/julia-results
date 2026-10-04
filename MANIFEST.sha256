@@ -108,3 +108,12 @@ ab0426ad1c9116dfc6ba4dd7c81e6ac68cad2c9b38a2372b39003c0af3525372  ./sources/veri
 8cdc560f3777a674c79f2b83c956fcb418f3f40482e98d4359ed8069ccc4c8cc  ./sources/verification-fixed-stade/hashes_fixed.json
 dd78e819e3c2e704e673b9835d77ca0091967341019939ab650558cae7691f54  ./sources/verification-fixed-stade/sweep_driver_final.jl
 27679acf7bc47940dab2a4a79d793afd3fff20680ad00f8c7b8088e0b8c29117  ./sources/verification-fixed-stade/sweep_hashes.json
+21dc29fca660974c952ae1641cacab2feb6bbcc4fe9e7cb9bae31095814a4e7b  ./sources/verification-stade-0.4.4/A_red.jl
+cc69f13bcc5c4e1189a615d6ad4d11fa3ecdfae09376feae1a88e9854218dfb7  ./sources/verification-stade-0.4.4/B_sweep.jl
+c28c27897189e0d47ccc8435f6943a9ae0f13b5ac10c758db7ae7cf9e83d6c90  ./sources/verification-stade-0.4.4/C_hashes.json
+dd01b30a3dde906a43d62b6c6e3152089f92de7eefdf96cbd59619e081d7f9f2  ./sources/verification-stade-0.4.4/C_sp.jl
+c7bc34ab32589d46d90711928a4c2b2315e6dccc3067316c638ac13c34080dc0  ./sources/verification-stade-0.4.4/D_dm.jl
+6aa341e94c17f3431e055668961491be8591272703771a92d1bcabdc046bf41f  ./sources/verification-stade-0.4.4/PROVENANCE.md
+ed3d9f5eb79146036f402a53f249ab6dbce55a85cdbbfe858e625d36aea84d7a  ./sources/verification-stade-0.4.4/static_test_validate_backend_agreement.txt
+9474984503ef55121953229f8f268dbc6ddd67f3c3e35a2e5886186bc5596b4c  ./sources/verification-stade-0.4.4/static_test_validate_jacc_reduction.txt
+acc7ac5cca881801440d38987fce7af215833fbff443f45eb4471c36ef498989  ./sources/verification-stade-0.4.4/static_test_validate_write_overlap.txt
