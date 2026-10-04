@@ -41,6 +41,7 @@ else:
 
 TIME = TASKS.get("time", {})
 GATE_TOL = TASKS.get("gate_tol", 1e-9)
+DEADLINE = TASKS.get("deadline_unix")
 REF = json.load(open(args.ref)) if (args.ref and os.path.exists(args.ref) and not args.write_ref) else {}
 NEWREF = {}
 OUT = {"fw": FW, "records": [], "env": {}, "errors": []}
@@ -143,7 +144,12 @@ def block(x):
 # ---------------------------------------------------------------- timing
 def time_protocol(run, warmup=10, trials=30, tmin=0.05, kmax=1000, nevent=30):
     warmup = TIME.get("warmup", warmup); trials = TIME.get("trials", trials); tmin = TIME.get("tmin", tmin); nevent = TIME.get("nevent", nevent)
-    for _ in range(warmup): out = run()
+    out = run(); block(out)                                    # first call (may compile)
+    t0 = time.perf_counter(); out = run(); block(out); tq = time.perf_counter() - t0
+    reduced = False
+    if tq > 0.1: warmup = min(warmup, 2); reduced = True       # slow call: shorter warm-up
+    if tq > 0.5: trials = int(min(trials, max(5, 15 / tq))); nevent = min(nevent, 5); reduced = True
+    for _ in range(max(0, warmup - 2)): out = run()
     block(out)
     t1s = []
     for _ in range(3):
@@ -167,7 +173,7 @@ def time_protocol(run, warmup=10, trials=30, tmin=0.05, kmax=1000, nevent=30):
                 block(out); t0 = time.perf_counter_ns(); out = run(); block(out); ev.append((time.perf_counter_ns() - t0) / 1e3)
     finally:
         gc.enable()
-    return {"trial_us": tr, "event_us": ev, "K": K, "trials": trials, "warmup": warmup}
+    return {"trial_us": tr, "event_us": ev, "K": K, "trials": trials, "warmup": warmup, "reduced_protocol": reduced}
 
 # ---------------------------------------------------------------- memory
 def gpu_free():
@@ -188,7 +194,7 @@ def memory_probe(fam, params, mode, variant, scope):
     """Footprint of one gradient evaluation (or forward). Runs in the current process; see the plan section 8.2."""
     rec = {}
     gc.collect()
-    if FW == "torch" and DEV == "cuda": torch.cuda.empty_cache(); sync(); rec["free0"] = gpu_free()
+    if FW == "torch" and DEV == "cuda": torch.cuda.empty_cache(); sync(); rec["free0"] = gpu_free(); rec["alloc_base"] = torch.cuda.memory_allocated()
     if FW == "jax": rec["jax0"] = jax_stats()
     P, c, _ = build(fam, params, mode)
     if mode == "adjoint": run, grads, gn = make_adjoint(fam, P, c, variant, scope)
@@ -260,7 +266,9 @@ def run_task(t):
                         rec = time_protocol(run)
                         OUT["records"].append(dict(base, kind="time", first_call_s=first_call_s, **rec))
                     if "mem" in modes:
-                        del P, run
+                        P = run = out = grads = gn = None
+                        gc.collect()
+                        if FW == "torch" and DEV == "cuda": torch.cuda.empty_cache()
                         OUT["records"].append(dict(base, kind="mem", **memory_probe(fam, params, mode, variant, scope)))
                 except Exception as e:
                     OUT["errors"].append(dict(base, error=repr(e)[:500], trace=traceback.format_exc()[-900:]))
@@ -343,6 +351,8 @@ def main():
                   "device": (torch.cuda.get_device_name(0) if FW == "torch" and DEV == "cuda" else (str(jax.devices()[0]) if FW == "jax" else "cpu")),
                   "import_seconds": time.perf_counter() - T0}
     for t in TASKS["tasks"]:
+        if DEADLINE and time.time() > DEADLINE:
+            OUT["records"].append(dict(kind="skipped", task=t, reason="time budget")); continue
         try:
             run_train(t) if "model" in t else run_task(t)
         except Exception as e:

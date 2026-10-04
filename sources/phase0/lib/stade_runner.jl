@@ -262,7 +262,12 @@ end
 
 # ------------------------------------------------------------------ timing
 function time_protocol(f!::Function, be::Backend; warmup = 10, trials = 30, tmin = 0.05, kmax = 1000, nevent = 30)
-    for _ in 1:warmup; f!(); end
+    f!(); be.sync()                                            # first call
+    t0 = time_ns(); f!(); be.sync(); tq = (time_ns() - t0) * 1e-9
+    reduced = false
+    if tq > 0.1; warmup = min(warmup, 2); reduced = true; end
+    if tq > 0.5; trials = clamp(round(Int, 15 / tq), 5, trials); nevent = min(nevent, 5); reduced = true; end
+    for _ in 1:max(0, warmup - 2); f!(); end
     be.sync()
     t1s = Float64[]
     for _ in 1:3
@@ -280,7 +285,7 @@ function time_protocol(f!::Function, be::Backend; warmup = 10, trials = 30, tmin
     end
     ev = Float64[]
     for _ in 1:nevent; push!(ev, be.elapsed(f!) * 1e6); end
-    return Dict("trial_us" => tr, "event_us" => ev, "K" => K, "trials" => trials, "warmup" => warmup)
+    return Dict("trial_us" => tr, "event_us" => ev, "K" => K, "trials" => trials, "warmup" => warmup, "reduced_protocol" => reduced)
 end
 
 # ------------------------------------------------------------------ memory

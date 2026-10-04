@@ -119,7 +119,13 @@ function train_group(gi, group, order)
             for t in group["tasks"]; train_stade!(recs, BE, t, comm); end
         else
             fw = letter == "P" ? "torch" : "jax"
-            tasks = Any[merge(Dict{String,Any}("model" => t["model"], "size" => t["size"]), haskey(t, fw * "_variants") ? Dict{String,Any}("variant" => t[fw * "_variants"][1]) : Dict{String,Any}()) for t in group["tasks"]]
+            tasks = Any[]
+            for t in group["tasks"]
+                vs = get(t, fw * "_variants", Any[nothing])
+                for v in vs
+                    push!(tasks, v === nothing ? Dict{String,Any}("model" => t["model"], "size" => t["size"]) : Dict{String,Any}("model" => t["model"], "size" => t["size"], "variant" => v))
+                end
+            end
             res = run_python(fw, tasks, tag)
             recs = res["records"]; info["exit"] = res["exit"]; info["python_seconds"] = res["seconds"]
             for e in res["errors"]; push!(recs, merge(Dict("kind" => "error"), e)); end

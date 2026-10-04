@@ -184,6 +184,28 @@
    "sha256_original": "2fb84a6617db92b6f16071d3cf3f3c88d7ea8ea309f2bfa427fa7d950892d040",
    "sha256_stripped": "8c06ce19c7959dd94c9ff7e438829ed24f2d253a00a3534f8754c5e7b778624b",
    "kernels": 152
+  },
+  "dotprod_b_cuda_thr0.jl": {
+   "bytes_original": 2257,
+   "bytes_stripped": 2184,
+   "lines_removed": 2,
+   "sha256_original": "a186d1f7b76c91320524e7a435e53ebc4df5b1a704f8eb303c8447971dae5a57",
+   "sha256_stripped": "73158064b10704736464edaaa820586ef8a41f14066a1207bbba0099d9d6235d",
+   "kernels": 3,
+   "flags_extra": {
+    "reduction_threshold": 0
+   }
+  },
+  "dotprod_b_cuda_thrmax.jl": {
+   "bytes_original": 2293,
+   "bytes_stripped": 2220,
+   "lines_removed": 2,
+   "sha256_original": "ccb0407446c46dbcd92dbd550b3a6cb02a0b2fc449e6763251e2a4c4139a6b6e",
+   "sha256_stripped": "617ed01759f5e0578071671437942bd35deee26ffb1461f94c1efbc8c4e16ce9",
+   "kernels": 3,
+   "flags_extra": {
+    "reduction_threshold": "typemax(Int)"
+   }
   }
  }
 }

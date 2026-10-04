@@ -13,16 +13,21 @@ def sources_for(job):
         for t in g["tasks"]:
             if "model" in t: fams.add(next(m for m in spec["train"]["models"] if m["id"] == t["model"])["family"])
             else: fams.add(next(c for c in spec["cases"] if c["id"] == t["case"])["family"])
+    variants = {t.get("stade_variant") for g in job["groups"] for t in g["tasks"] if t.get("stade_variant")}
     if job.get("probes"): fams.update(["mlp1d"])
     for f in sorted(fams):
         F = spec["families"][f]
         if target == "gpu":
-            for be in ("cuda", "jacc"):
+            used = {be for g in job["groups"] for t in g["tasks"] for be in t.get("backends", ["cuda", "jacc"])} | ({"cuda"} if job.get("probes") else set())
+            for be in [x for x in ("cuda", "jacc") if x in used]:
                 for nm in {F["kernel"] + "_b_" + be + ".jl", (F["kernel"] + "_b_" + be + ".jl") if F["primal_kernel"] == F["kernel"] else (F["primal_kernel"] + "_" + be + ".jl")}:
                     need[nm] = rd(os.path.join(FINAL, nm.replace(".jl", ".stripped.jl")))
         else:
             need[F["kernel"] + "_b.jl"] = rd(os.path.join("/home/claude/work/gen_044", F["kernel"] + "_b.jl"))
             need[F["primal_kernel"] + ".jl"] = rd(os.path.join("/home/claude/work/stade_044/STADE.jl/test/val-corpus", F["primal_kernel"] + ".jl"))
+        for v in variants:
+            if target == "gpu" and f == "dotprod":
+                nm = F["kernel"] + "_b_cuda_" + v + ".jl"; need[nm] = rd(os.path.join(FINAL, nm.replace(".jl", ".stripped.jl")))
         if job.get("kind") == "train" or job.get("probes"):
             if f in ("mlp1d", "transformer", "unet", "mpnn"):
                 nm = F["kernel"] + "_batch.jl"; need[nm] = rd(os.path.join(FINAL, "batch", nm))
@@ -36,7 +41,7 @@ def build(job):
     src = sources_for(job)
     head = ["using JSON3, Base64, Dates, Pkg"]
     if target == "gpu": head.insert(0, "using CUDA, JACC")
-    if job.get("use_mpi") and not job.get("stub_mpi"): head.append("using MPI")
+    if job.get("use_mpi") and not job.get("stub_mpi"): head.append("try; using MPI; catch e; @warn(\"MPI.jl could not be loaded\", e); end")
     parts = ["\n".join(head), ""]
     parts.append(f'const SPEC_B64 = "{b64(spec_text)}"')
     parts.append(f'const JOB_B64 = "{b64(json.dumps(job))}"')

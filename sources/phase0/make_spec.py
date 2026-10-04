@@ -130,7 +130,7 @@ for f, dv in derived.items(): fam[f]["derived"] = dv
 # ---- training (batch size 1, plan section 9)
 per_sample = {"mlp1d": ["x", "y"], "transformer": ["x_in", "target"], "unet": ["x", "target"], "mpnn": ["node_feat", "edge_feat", "target"]}
 for f, ps in per_sample.items(): fam[f]["per_sample"] = ps
-train_lr = {"mlp1d": 0.002, "transformer": 0.0005, "T-M": 0.00003, "unet": 0.002, "mpnn": 0.001}   # a size id overrides the family default
+train_lr = {"mlp1d": 0.002, "transformer": 0.0005, "T-M": 0.00003, "unet": 0.0003, "mpnn": 0.001}   # a size id overrides the family default
 TRAIN = dict(nwarm=20, nsteps=300, N=1024, lr=train_lr,
              models=[dict(id="M1", family="mlp1d", sizes=[dict(id=f"nh{n}", params=dict(n_h=n)) for n in (64, 512, 2048)]),
                      dict(id="M2", family="transformer", sizes=[dict(id="T-S", params=TS), dict(id="T-M", params=TM)]),

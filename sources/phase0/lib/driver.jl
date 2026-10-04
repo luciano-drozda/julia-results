@@ -9,6 +9,8 @@ const WORKROOT = get(ENV, "WORK", tempdir())
 const WORK = joinpath(WORKROOT, "bench", JOB_ID)
 const REFPATH = joinpath(WORK, "ref.json")
 const TOL = Float64(get(JOB, "gate_tol", 1e-9))
+const T_START = Ref(time())
+over_budget(margin = 0.0) = (b = Float64(get(JOB, "budget_s", 0)); b > 0 && time() - T_START[] > b - margin)
 
 const TORCH_LAUNCH = "source /scratch/coop/drozda/torch-env/bin/activate\npython \"\$@\"\n"
 const JAX_LAUNCH = "source /scratch/coop/drozda/jax-env/bin/activate\nSP=\$(python -c \"import site;print(site.getsitepackages()[0])\")\nexport LD_LIBRARY_PATH=\"\$(ls -d \$SP/nvidia/*/lib | tr '\\n' ':')\"\nexport XLA_PYTHON_CLIENT_PREALLOCATE=false\npython \"\$@\"\n"
@@ -56,15 +58,16 @@ function get_module(fname::String)
     return MODS[fname]
 end
 
-function code_file(fam, backend, mode)
+function code_file(fam, backend, mode; variant = "")
+    sfx = isempty(variant) ? "" : "_" * variant
     if backend == "cpu"
         return mode == "adjoint" ? fam["kernel"] * "_b.jl" : fam["primal_kernel"] * ".jl"
     end
     suffix = backend
     if mode == "adjoint" || fam["primal_kernel"] == fam["kernel"]
-        return fam["kernel"] * "_b_" * suffix * ".jl"
+        return fam["kernel"] * "_b_" * suffix * sfx * ".jl"
     end
-    return fam["primal_kernel"] * "_" * suffix * ".jl"
+    return fam["primal_kernel"] * "_" * suffix * sfx * ".jl"
 end
 
 # ------------------------------------------------------------------ STADE pass
@@ -101,12 +104,12 @@ function stade_task!(recs, t, ref, BE)
     arrays, scalars, ints = make_data(fam, size["params"])
     azero = String.(get(fam, "analytic_zero", String[]))
     for beK in get(t, "backends", ["cuda", "jacc"])
-        be = BE[beK]; contender = beK == "cuda" ? "S-CUDA" : (beK == "jacc" ? "S-JACC" : "S-CPU")
+        be = BE[beK]; contender = (beK == "cuda" ? "S-CUDA" : (beK == "jacc" ? "S-JACC" : "S-CPU")) * (isempty(String(get(t, "stade_variant", ""))) ? "" : "[" * String(t["stade_variant"]) * "]")
         for mode in ("primal", "adjoint")
             get(t, mode, true) || continue
             base = Dict{String,Any}("case" => t["case"], "size" => t["size"], "contender" => contender, "mode" => mode, "scope" => "all")
             try
-                file = code_file(fam, beK, mode)
+                variant = String(get(t, "stade_variant", "")); file = code_file(fam, beK, mode; variant = variant)
                 (mod, code, load_s) = get_module(file)
                 st = setup!(be, mod, code, fam, arrays, scalars, ints, Symbol(mode))
                 t0 = time_ns(); step!(st); be.sync(); first_s = (time_ns() - t0) * 1e-9
@@ -144,7 +147,13 @@ end
 
 function stade_pass(tasks)
     recs = Any[]; ref = load_ref(); BE = make_backends()
-    for t in tasks; stade_task!(recs, t, ref, BE); end
+    for t in tasks
+        if over_budget(30.0)
+            push!(recs, Dict{String,Any}("kind" => "skipped", "case" => t["case"], "size" => t["size"], "reason" => "time budget"))
+            continue
+        end
+        stade_task!(recs, t, ref, BE)
+    end
     return recs
 end
 
@@ -157,7 +166,7 @@ end
 
 function run_python(fw::String, tasks, tag; write_ref = false, extra = Dict{String,Any}())
     tf = joinpath(WORK, "tasks_" * tag * ".json"); of = joinpath(WORK, "out_" * tag * ".json")
-    cfg = Dict{String,Any}("tasks" => tasks, "gate_tol" => TOL, "time" => get(JOB, "time", Dict()), "cudnn_benchmark" => true)
+    cfg = Dict{String,Any}("tasks" => tasks, "gate_tol" => TOL, "deadline_unix" => (Float64(get(JOB, "budget_s", 0)) > 0 ? T_START[] + Float64(get(JOB, "budget_s", 0)) - 45.0 : nothing), "time" => get(JOB, "time", Dict()), "cudnn_benchmark" => true)
     merge!(cfg, extra)
     write(tf, JSON3.write(cfg))
     sh = joinpath(WORK, "launch_" * fw * ".sh"); write(sh, get(JOB, "launch_" * fw, fw == "torch" ? TORCH_LAUNCH : JAX_LAUNCH))
@@ -184,7 +193,8 @@ end
 function fw_tasks(tasks, fw)
     out = Any[]
     for t in tasks
-        d = Dict{String,Any}("case" => t["case"], "size" => t["size"], "modes" => get(t, "modes", ["gate"]),
+        get(t, "stade_only", false) && continue
+        d = Dict{String,Any}("case" => t["case"], "size" => t["size"], "modes" => get(t, (fw == "torch" ? "torch_modes" : "jax_modes"), get(t, "modes", ["gate"])),
                               "primal" => get(t, "primal", true), "adjoint" => get(t, "adjoint", true))
         if fw == "torch"; haskey(t, "torch_variants") && (d["variants"] = t["torch_variants"])
         else; haskey(t, "jax_variants") && (d["variants"] = t["jax_variants"]); end
@@ -199,6 +209,9 @@ function run_group(gi, group, order)
     all = Any[]; passes = Any[]
     for (pi, letter) in enumerate(order)
         tag = "g$(gi)_p$(pi)_$(letter)"
+        if over_budget(60.0)
+            push!(passes, Dict{String,Any}("tag" => tag, "tool" => letter, "skipped" => "time budget")); continue
+        end
         snap0 = gpu_snapshot("before_" * tag); t0 = time()
         recs = Any[]; info = Dict{String,Any}("tag" => tag, "tool" => letter)
         if letter == "S"
@@ -219,6 +232,7 @@ function run_group(gi, group, order)
 end
 
 function main()
+    T_START[] = time()
     mkpath(WORK)
     write_pyfiles()
     set_spec!(decode_text(SPEC_B64))

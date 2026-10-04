@@ -1,0 +1,167 @@
+{
+ "plan_version": "2.9",
+ "phase0": "complete, awaiting user review",
+ "stade": {
+  "version": "0.4.4",
+  "zip_sha256": "c5dd3d9904d0386e312cee31c4b05b3c92d4b87d73980a16667cec3d1f53278a",
+  "src_sha256": "ca53962b474b087302fe9792249b07707ab1000f2d1f2ceffa9ad04c723dceab"
+ },
+ "next": "bench-j0",
+ "jobs": {
+  "bench-j0": {
+   "status": "pending",
+   "payload_sha256": "99697ad1039da5f49c69bf92a8938ad6769c3862bcabc86466d343b47044ba3d"
+  },
+  "bench-j1a-r1": {
+   "status": "pending",
+   "payload_sha256": "3b1546e545ed7d3f979a42e4fca8a31ae1148c0cf6b9d662bdd22747f0537e5a"
+  },
+  "bench-j1a-r2": {
+   "status": "pending",
+   "payload_sha256": "25df299600025ede8c6026c266e0f56154fee833ba05d42d6ba848561e9c824c"
+  },
+  "bench-j1a-r3": {
+   "status": "pending",
+   "payload_sha256": "52883ae859f7a4903af1cee320f63221e5e0a7d4569101d03079c7dfa4978c94"
+  },
+  "bench-j1b-r1": {
+   "status": "pending",
+   "payload_sha256": "3149d7484738874b436c2d822183ca1c8e8c5d65a6e5b9477f824ff4268c7004"
+  },
+  "bench-j1b-r2": {
+   "status": "pending",
+   "payload_sha256": "5a109dedd0a84ac6dc1efcd100bd54fd1fcb09d268b7aea01930250f72e6352d"
+  },
+  "bench-j1b-r3": {
+   "status": "pending",
+   "payload_sha256": "c20d710d4fbed824089e65ca46dcb0dfb426063536bfdfe6b8b16e2a528fa5f9"
+  },
+  "bench-j2a-r1": {
+   "status": "pending",
+   "payload_sha256": "2dadacb38a4f8163c0818c2cd5f6882e242bac4c287ad9c112a52ce13b57fefd"
+  },
+  "bench-j2a-r2": {
+   "status": "pending",
+   "payload_sha256": "79a3165d2356cb8f01d8bcd86bd4089a56db700eb7f0373dc1d4446569da14f9"
+  },
+  "bench-j2a-r3": {
+   "status": "pending",
+   "payload_sha256": "940b6b882b03793f4f94d8c42dbce0f851a6cba0457fdf313de0d2b2ab47648a"
+  },
+  "bench-j2b-r1": {
+   "status": "pending",
+   "payload_sha256": "d9857658074bba1441f03b9b3a47a3d29a4d3ccb50dcd29efa87a23fd05166df"
+  },
+  "bench-j2b-r2": {
+   "status": "pending",
+   "payload_sha256": "872a55c852b62f769d60b6678be2c65d1a4d0f65e057045e63d995e40a341aa4"
+  },
+  "bench-j2b-r3": {
+   "status": "pending",
+   "payload_sha256": "93a2adceb5f95813936345adb54bf93652a9980e9fe6388f0e497bab0ba344f9"
+  },
+  "bench-j3a-r1": {
+   "status": "pending",
+   "payload_sha256": "c811dae7c8f205ffe2f9c68aa0138e9b424202a1c9fddd8298608079aa9d6e5c"
+  },
+  "bench-j3a-r2": {
+   "status": "pending",
+   "payload_sha256": "17d0c48378fb7fe3e651a4cc4607a27abf619fdf791ff38c8f83234203ee8c4e"
+  },
+  "bench-j3a-r3": {
+   "status": "pending",
+   "payload_sha256": "056e1818472b19c6e5f6530b6222663b14af254ad9c0d4af82030c5d7e7cdabf"
+  },
+  "bench-j3b-r1": {
+   "status": "pending",
+   "payload_sha256": "831ff7a8317091b989c6e759999f6dce1cfbee166190db8d1dab52b176a8215a"
+  },
+  "bench-j3b-r2": {
+   "status": "pending",
+   "payload_sha256": "0916b95af2b24c4afbb974df94863aa6711f4653601223ef03b6a969782509cb"
+  },
+  "bench-j3b-r3": {
+   "status": "pending",
+   "payload_sha256": "2cc696d7140a1df67c8b0e84cb6d0665ed2c98346d02635c50fb8ee01df3c2ff"
+  },
+  "bench-j4-r1": {
+   "status": "pending",
+   "payload_sha256": "c6320a1a97250a62f4d56cbdfd538fc40176341c7a443426d7749c153d6e62c4"
+  },
+  "bench-j4-r2": {
+   "status": "pending",
+   "payload_sha256": "f0176d3247d7aa4e9b7300461de84ce1ae136a31ed8c9bf6edd03c68b8b356bc"
+  },
+  "bench-j4-r3": {
+   "status": "pending",
+   "payload_sha256": "99dad6f240e65b2eee0feb56ca7d344c8487e3e4fe72914b1fb14fe58048feaf"
+  },
+  "bench-j5a-r1": {
+   "status": "pending",
+   "payload_sha256": "01cee94fe688051d88e0583f28c8df87911e208ca2a63958ce63e0a8cbf86196"
+  },
+  "bench-j5a-r2": {
+   "status": "pending",
+   "payload_sha256": "b2fffcfaa35750dda00d838dd45e16fba5bc353b9f34f1eb1bcd4b8357c00355"
+  },
+  "bench-j5a-r3": {
+   "status": "pending",
+   "payload_sha256": "8e106ed89e481c88ae10321244d30c4474aa01dd361b67bebf7877cce6760590"
+  },
+  "bench-j5b-r1": {
+   "status": "pending",
+   "payload_sha256": "367a442b8ab3ef2dcceecefa4a04b27a35d9de557115245b1746572d5f7715a3"
+  },
+  "bench-j5b-r2": {
+   "status": "pending",
+   "payload_sha256": "e09a10caa793ea30d11ff0b8444c9106c3700d55694097602e861c3922df1903"
+  },
+  "bench-j5b-r3": {
+   "status": "pending",
+   "payload_sha256": "dd355fcb38c75da43c42faf48dd64b00b0b37f7669bb2eeebef2a06af7975206"
+  },
+  "bench-j6a-r1": {
+   "status": "pending",
+   "payload_sha256": "0ffe54fb735718c8f34603f60d25ba8174409f6549a8abd164fe4ae90d0e36ad"
+  },
+  "bench-j6a-r2": {
+   "status": "pending",
+   "payload_sha256": "af4fda085d549acfb1bfba092cbe95c828cef9d3c5562a4df8c5cad3146c1f3f"
+  },
+  "bench-j6a-r3": {
+   "status": "pending",
+   "payload_sha256": "07c8b354fbac849569f16d693a55f06eadc095d1eec0da6209c2fbcc239c8388"
+  },
+  "bench-j6b-r1": {
+   "status": "pending",
+   "payload_sha256": "b32290db07f030bdf095c3722c93d3ab113429d9e531da9cec65f59a2059a9ae"
+  },
+  "bench-j6b-r2": {
+   "status": "pending",
+   "payload_sha256": "81bbaf2d7e278b3868a87c5ca04a0590f1ba410a9566559c73392675b18db016"
+  },
+  "bench-j6b-r3": {
+   "status": "pending",
+   "payload_sha256": "cc3f5dcb8466154afed688bc8282edc9d90466164db96c7473fd9bfc1c098231"
+  },
+  "bench-j7a-r1": {
+   "status": "pending",
+   "payload_sha256": "71b94b4c07a0a1b8ffc97d6845432268c6222843a1c2ba0903cb24cd652421ce"
+  },
+  "bench-j7a-r2": {
+   "status": "pending",
+   "payload_sha256": "7900a1179f75cb58d121d2b9df461fb5ec1ff8d4b0089f2ede29315421ef995c"
+  },
+  "bench-j7b-r1": {
+   "status": "pending",
+   "payload_sha256": "cda71a1970251307dc9b2deb80bbdcae7c895ca23677d524c620c9a8122840e9"
+  },
+  "bench-j7b-r2": {
+   "status": "pending",
+   "payload_sha256": "aab40d11660d8f7c472d419ca9b24140881587e507f409ca1001ed72ef46089f"
+  }
+ },
+ "order_rule": "repeat 1: P,S,J / repeat 2: J,S,P / repeat 3: P,J,S (a Python tool always first: it writes the gate reference)",
+ "slurm_time_limit_min": 15,
+ "job_budget_s": 800
+}

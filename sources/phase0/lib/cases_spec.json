@@ -2873,7 +2873,7 @@
    "mlp1d": 0.002,
    "transformer": 0.0005,
    "T-M": 3e-05,
-   "unet": 0.002,
+   "unet": 0.0003,
    "mpnn": 0.001
   },
   "models": [
