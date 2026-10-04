@@ -69,6 +69,9 @@ d39fa6263fe6c6837bfe53567c7ae2cad2c8342f8b0fcdd775460c2bfb0643c8  ./raw/healthch
 74118c3b4cf05bf48889702c6d8b1f21ece26509983a076404ecece6d9ab82f6  ./raw/healthchecks/verify044-stencil-sweep-20261004T145424Z/job.json
 73c40fc84480dca6351b40bf7e70a907e0289c7ba58ad11ef353b2366594cb87  ./raw/healthchecks/verify044-stencil-sweep-20261004T145424Z/result.json
 77e97d4a43e3c9c4ccd470fdb06f11ca3965ae490bf4a9d2703293c1f62d9a2b  ./raw/healthchecks/verify044-stencil-sweep-20261004T145424Z/submission.json
+a8e48b2bc4745817ee1bd731376d2e50ce02b90d6ff5ad39d8fc768d6cb25d44  ./raw/p1-preflight/bench-j0-20261004T174151Z/job.json
+97562e1e09909b466d597dcdaa4497dcea8f0befbe040e84a039324532a87962  ./raw/p1-preflight/bench-j0-20261004T174151Z/result.json
+0c4ad1cbf8d0394e0014d8d48022fac2b332d9f7f5ec476e42f092fdf5b2f497  ./raw/p1-preflight/bench-j0-20261004T174151Z/submission.json
 ffa69fb232573b64cbcdf2eba1e005b3d5c2b4742ef410d0761839b03a0701f4  ./raw/p1-preflight/bench-j0-20261004T181002Z/job.json
 cd8741d04914039a07f0f11e1b543b4d7438cc0e7c3a47213309b23ed2c14af1  ./raw/p1-preflight/bench-j0-20261004T181002Z/result.json
 6f7a314190999f32aa55efbbc90bf1dd72b2f7769b0d4c0b8afa71075b2f33ac  ./raw/p1-preflight/bench-j0-20261004T181002Z/submission.json
@@ -81,6 +84,15 @@ f9ecd29de563973adb142c250354cdd0bb3d31a84b41d1d9abfd5e40906846ae  ./raw/p1-prefl
 4cb205b557e61f7a3055018eb2198062c58db28a8d7aef686a005d85677ce9a7  ./raw/p1-preflight/bench-j0m-20261004T191153Z/job.json
 7ba0623b367cc8314e1b6f14db5497d94f9cbc3947cfa454fd0195bdba26de57  ./raw/p1-preflight/bench-j0m-20261004T191153Z/result.json
 57c27f6121d71908cbfc17076751b3ddbe1e279aafcb28fdeb57df72018bf5d8  ./raw/p1-preflight/bench-j0m-20261004T191153Z/submission.json
+e2823d75eae3878ece2bec551b84bf1dc0c3ab14a505cac1c05f742acdcc5279  ./raw/p1-preflight/diag-cudamem-20261004T185229Z/job.json
+ff79a80309055e55e57e6665917505d2f896c2f893410b068e2524707229a361  ./raw/p1-preflight/diag-cudamem-20261004T185229Z/result.json
+6c5c57c62155a27fe8481c0b7ee3a5f33981af36fb8b1071c14ea2848c3cee24  ./raw/p1-preflight/diag-cudamem-20261004T185229Z/submission.json
+894a7aa5653930f239f620fe5ce37605610c3370c443797f76ead1345fd2d4be  ./raw/p1-preflight/diag-j0-hang-20261004T180014Z/job.json
+b89995d69226cc88e1cd3b267ffebf860ed4cda579045312dd1ea9fa0ca3af5a  ./raw/p1-preflight/diag-j0-hang-20261004T180014Z/result.json
+ceea11b06c30a502ff65455e4a2515269c1b09a58ecd72bd621885b90a5445f2  ./raw/p1-preflight/diag-j0-hang-20261004T180014Z/submission.json
+ebf3a0f6e3f099f3cb89f87955abef3bf41a0181f213b59d27c8fdfff13d25b7  ./raw/p1-preflight/diag-j0-logs-20261004T175810Z/job.json
+0320e542db38b021686ec790759343c498f9008302113ca681558a36be6ce2d6  ./raw/p1-preflight/diag-j0-logs-20261004T175810Z/result.json
+383ce1e6adb2c0ca4a224293c274cc9553ce36e2abb84d4d423ddb0f93975da8  ./raw/p1-preflight/diag-j0-logs-20261004T175810Z/submission.json
 16d4f5854fe681bad9a66b85964978290633b1e80347897c1c40b28997a292a0  ./sources/healthcheck-advection/README.md
 28baefbcfe81ab3878a39fb4aa40cc1c2a593c235d8cf0ab1ca433437673593b  ./sources/healthcheck-advection/adv_driver_run1_du_expectation_flawed.jl
 21771d463b481a10d0ec86458b16c8b0127ff9d6967b7dc5f1247a47382b564d  ./sources/healthcheck-advection/adv_driver_run2_valid.jl
