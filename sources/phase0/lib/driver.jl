@@ -23,6 +23,25 @@ clean(x::Tuple) = Any[clean(v) for v in x]
 
 function now_s(); return time(); end
 
+function plog(msg)
+    line = string(round(time() - T_START[]; digits = 1), " s | ", msg)
+    println(stderr, line); flush(stderr)
+    try; open(joinpath(WORK, "progress.log"), "a") do io; println(io, line); end; catch; end
+    return nothing
+end
+
+# MPI.Init() hangs in a plain Julia process on this cluster (measured). Jobs that need MPI relaunch themselves under `mpirun -n 1`.
+function relaunch_under_mpi()
+    launcher = split(get(ENV, "BENCH_LAUNCHER", "mpirun -n 1"))
+    script = abspath(PROGRAM_FILE)
+    mkpath(WORK); plog("parent: relaunching under " * join(launcher, " "))
+    cmd = `$launcher $(Base.julia_cmd()) $script`
+    env = merge(Dict(ENV), Dict("BENCH_CHILD" => "1", "BENCH_T0" => string(T_START[])))
+    p = run(setenv(ignorestatus(cmd), env))
+    plog("parent: child exited with code " * string(p.exitcode))
+    exit(p.exitcode)
+end
+
 # ------------------------------------------------------------------ GPU snapshots
 function smi(query)
     try
@@ -153,11 +172,11 @@ end
 function stade_pass(tasks)
     recs = Any[]; ref = load_ref(); BE = make_backends()
     for t in tasks
-        if over_budget(30.0)
-            push!(recs, Dict{String,Any}("kind" => "skipped", "case" => t["case"], "size" => t["size"], "reason" => "time budget"))
+        if over_budget(max(30.0, Float64(get(t, "needs_s", 0.0))))
+            push!(recs, Dict{String,Any}("kind" => "skipped", "case" => t["case"], "size" => t["size"], "reason" => "time budget (task needs " * string(get(t, "needs_s", 0)) * " s)"))
             continue
         end
-        stade_task!(recs, t, ref, BE)
+        plog("S task " * t["case"] * " " * t["size"]); stade_task!(recs, t, ref, BE)
     end
     return recs
 end
@@ -178,9 +197,11 @@ function run_python(fw::String, tasks, tag; write_ref = false, extra = Dict{Stri
     args = ["--fw", fw, "--tasks", tf, "--out", of, "--ref", REFPATH]
     write_ref && push!(args, "--write-ref")
     t0 = time()
-    p = run(pipeline(ignorestatus(`bash $sh $(joinpath(WORK, "lib", "harness_fw.py")) $args`);
+    tmo = Float64(get(JOB, "budget_s", 0)) > 0 ? max(60, round(Int, T_START[] + Float64(get(JOB, "budget_s", 0)) - time() - 20)) : 3600
+    plog("python " * fw * " starts (timeout " * string(tmo) * " s)")
+    p = run(pipeline(ignorestatus(`timeout $tmo bash $sh $(joinpath(WORK, "lib", "harness_fw.py")) $args`);
                      stdout = joinpath(WORK, "stdout_" * tag * ".txt"), stderr = joinpath(WORK, "stderr_" * tag * ".txt")))
-    res = Dict{String,Any}("exit" => p.exitcode, "seconds" => time() - t0)
+    res = Dict{String,Any}("exit" => p.exitcode, "seconds" => time() - t0, "timed_out" => p.exitcode == 124)
     if isfile(of)
         out = JSON3.read(read(of, String), Dict{String,Any})
         res["records"] = out["records"]; res["errors"] = out["errors"]; res["env"] = out["env"]
@@ -204,6 +225,7 @@ function fw_tasks(tasks, fw)
         if fw == "torch"; haskey(t, "torch_variants") && (d["variants"] = t["torch_variants"])
         else; haskey(t, "jax_variants") && (d["variants"] = t["jax_variants"]); end
         haskey(t, "scopes") && (d["scopes"] = t["scopes"])
+        haskey(t, "needs_s") && (d["needs_s"] = t["needs_s"])
         push!(out, d)
     end
     return out
@@ -214,6 +236,7 @@ function run_group(gi, group, order)
     all = Any[]; passes = Any[]
     for (pi, letter) in enumerate(order)
         tag = "g$(gi)_p$(pi)_$(letter)"
+        plog("pass " * tag * " begins")
         if over_budget(60.0)
             push!(passes, Dict{String,Any}("tag" => tag, "tool" => letter, "skipped" => "time budget")); continue
         end
@@ -231,30 +254,32 @@ function run_group(gi, group, order)
         for r in recs; r["pass"] = pi; r["tool"] = letter; end
         append!(all, recs)
         info["seconds"] = time() - t0; info["snap_before"] = snap0; info["snap_after"] = gpu_snapshot("after_" * tag)
-        push!(passes, info)
+        push!(passes, info); plog("pass " * tag * " done in " * string(round(info["seconds"]; digits = 1)) * " s, " * string(length(recs)) * " records")
     end
     return all, passes
 end
 
 function main()
-    T_START[] = time()
+    T_START[] = haskey(ENV, "BENCH_T0") ? parse(Float64, ENV["BENCH_T0"]) : time()
     mkpath(WORK)
-    write_pyfiles()
+    if get(JOB, "relaunch", false) && !haskey(ENV, "BENCH_CHILD"); relaunch_under_mpi(); end
+    plog("main start (child=" * string(haskey(ENV, "BENCH_CHILD")) * ")")
+    write_pyfiles(); plog("python files written")
     set_spec!(decode_text(SPEC_B64))
     if get(JOB, "use_mpi", false) && !get(JOB, "stub_mpi", false); MPI.Initialized() || MPI.Init(); end
     res = Dict{String,Any}("job" => JOB_ID, "host" => gethostname(), "plan" => get(JOB, "plan", ""), "stade" => get(JOB, "stade", Dict()))
-    res["env"] = env_report()
-    res["snap_start"] = gpu_snapshot("start")
+    res["env"] = env_report(); plog("environment report done")
+    res["snap_start"] = gpu_snapshot("start"); plog("first GPU snapshot done")
     t0 = time()
     order = String.(get(JOB, "order", ["P", "S", "J", "J", "S", "P"]))
     allrecs = Any[]; passes = Any[]
+    if get(JOB, "probes", false); plog("probes begin"); res["probes"] = run_probes(); plog("probes done"); end
     for (gi, group) in enumerate(JOB["groups"])
         r, p = get(JOB, "kind", "bench") == "train" ? train_group(gi, group, order) : run_group(gi, group, order)
         append!(allrecs, r); append!(passes, p)
     end
     res["passes"] = passes
     res["loads"] = LOADS
-    if get(JOB, "probes", false); res["probes"] = run_probes(); end
     res["records"] = allrecs
     res["seconds"] = time() - t0
     res["snap_end"] = gpu_snapshot("end")

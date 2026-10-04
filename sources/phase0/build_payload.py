@@ -34,7 +34,9 @@ def sources_for(job):
     return need
 
 def build(job):
-    target = job.get("target", "gpu")
+    job = dict(job); target = job.get("target", "gpu")
+    if job.get("use_mpi") and not job.get("stub_mpi"): job["relaunch"] = True      # MPI.Init() hangs in a plain process: relaunch under mpirun
+    if job.get("relaunch") and job.get("stub_mpi"): pass
     spec_text = rd(os.path.join(LIB, "cases_spec.json"))
     py = {n: rd(os.path.join(LIB, n)) for n in ("bench_lib.py", "bench_models.py", "harness_fw.py", "probe_fw.py")}
     py["cases_spec.json"] = spec_text

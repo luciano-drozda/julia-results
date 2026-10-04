@@ -355,12 +355,15 @@ def main():
                   "device": (torch.cuda.get_device_name(0) if FW == "torch" and DEV == "cuda" else (str(jax.devices()[0]) if FW == "jax" else "cpu")),
                   "import_seconds": time.perf_counter() - T0}
     for t in TASKS["tasks"]:
-        if DEADLINE and time.time() > DEADLINE:
+        if DEADLINE and time.time() + float(t.get("needs_s", 0)) > DEADLINE:
             OUT["records"].append(dict(kind="skipped", task=t, reason="time budget")); continue
         try:
             run_train(t) if "model" in t else run_task(t)
         except Exception as e:
             OUT["errors"].append(dict(task=t, error=repr(e)[:500], trace=traceback.format_exc()[-900:])); log(f"ERROR task {t}: {e!r}")
+        log(f"task done: {t.get('case') or t.get('model')} {t.get('size')} ({time.perf_counter() - T0:.0f} s)")
+        try: json.dump(OUT, open(args.out, "w"))      # partial output survives a kill
+        except Exception: pass
     if args.write_ref:
         ref = dict(REF); ref.update(NEWREF); json.dump(ref, open(args.ref, "w"))
     OUT["total_seconds"] = time.perf_counter() - T0

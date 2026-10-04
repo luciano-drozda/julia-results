@@ -33,9 +33,9 @@ end
 function py_probe(fw::String)
     sh = joinpath(WORK, "launch_probe_" * fw * ".sh"); write(sh, get(JOB, "launch_" * fw, fw == "torch" ? TORCH_LAUNCH : JAX_LAUNCH))
     of = joinpath(WORK, "probe_" * fw * ".json")
-    p = run(pipeline(ignorestatus(`bash $sh $(joinpath(WORK, "lib", "probe_fw.py")) $fw $of`); stdout = joinpath(WORK, "probe_" * fw * "_stdout.txt"), stderr = joinpath(WORK, "probe_" * fw * "_stderr.txt")))
+    p = run(pipeline(ignorestatus(`timeout 150 bash $sh $(joinpath(WORK, "lib", "probe_fw.py")) $fw $of`); stdout = joinpath(WORK, "probe_" * fw * "_stdout.txt"), stderr = joinpath(WORK, "probe_" * fw * "_stderr.txt")))
     res = isfile(of) ? JSON3.read(read(of, String), Dict{String,Any}) : Dict{String,Any}("error" => "no probe output", "stderr_tail" => tail_of(joinpath(WORK, "probe_" * fw * "_stderr.txt")))
-    res["exit"] = p.exitcode
+    res["exit"] = p.exitcode; res["timed_out"] = p.exitcode == 124
     return res
 end
 
