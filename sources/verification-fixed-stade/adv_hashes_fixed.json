@@ -1,0 +1,22 @@
+{
+ "cuda_f64": {
+  "file": "advection_b_cuda.jl",
+  "sha256_original": "7ed761d39c809bbc41bdf4e16bed21fc080140f5584bf0b377978a957e8f0cf1",
+  "sha256_stripped": "2a64a9bde5b51629f53b38d3a6f4140c55870fd4786ac114994a3028a9eb513b"
+ },
+ "cuda_f32": {
+  "file": "advection_b_cuda_f32.jl",
+  "sha256_original": "b966660c97a3074ae378de2b08ab3eeab38011d634ef77d22647a69e769b47d6",
+  "sha256_stripped": "673901fbf208e5fa54ebfda8b1d4eb5df15c96f5cb0872add6c30a1993bdbb93"
+ },
+ "jacc_f64": {
+  "file": "advection_b_jacc.jl",
+  "sha256_original": "2c28beacdcaba106cb150a8f3eaec96d4de8ac79538103fe441f787cee555140",
+  "sha256_stripped": "22b78390d4c1e358e56b07a8d589ab08cd6ea6994c61f7f7d94bc0dbddd7711d"
+ },
+ "jacc_f32": {
+  "file": "advection_b_jacc_f32.jl",
+  "sha256_original": "0fbed2f650cc57559bb6fb90429115b5c8d22670ce3c6c9ddd1c353b51191563",
+  "sha256_stripped": "9e3ae8e48e45a35d200f1ec10538d195a0fbc07388de90cd8351461b050be8de"
+ }
+}

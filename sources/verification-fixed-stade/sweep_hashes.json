@@ -1,0 +1,12 @@
+{
+ "cuda": {
+  "file": "stencil_loss_b_cuda.jl",
+  "sha256_original": "eac0e5b80b4a3eacb8c90ff5cc3b245362ce18103ccad0bb28f31a19a137bd3d",
+  "sha256_stripped": "055904b7cec6fa145f59e3377b794ad57789eb71d713b0ecb24522fb5bd027fd"
+ },
+ "jacc": {
+  "file": "stencil_loss_b_jacc.jl",
+  "sha256_original": "074a89f0595fb43b81eba88b5273002cd211853082f6d250ab39520ab5c30891",
+  "sha256_stripped": "8b1002c41e9abb0fba752d6508480eb2d584d3f93c6edb9e7c7d90bc36ed3270"
+ }
+}
