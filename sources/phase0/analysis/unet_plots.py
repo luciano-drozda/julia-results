@@ -15,14 +15,22 @@ FW = ("P-EAGER", "P-GRAPH", "J-JIT")
 plt.rcParams.update({"font.size": 15, "axes.titlesize": 17, "axes.labelsize": 15, "legend.fontsize": 13, "xtick.labelsize": 14, "ytick.labelsize": 14, "axes.grid": True, "grid.alpha": .3})
 
 def load(d):
-    recs, meta = [], {}
+    """Timing and training records are kept only from passes that recorded no foreign GPU process (field `cotenant`).
+    Memory records are exact byte counts per process, so they are kept from any pass."""
+    recs, meta = [], {"dropped": collections.Counter(), "jobs": [], "hosts": set()}
     for p in sorted(glob.glob(os.path.join(d, "*.json"))):
         try: j = json.load(open(p))
         except Exception: continue
         if not isinstance(j, dict) or "records" not in j: continue
-        meta.setdefault("jobs", []).append(j.get("job")); meta.setdefault("hosts", set()).add(j.get("host"))
+        meta["jobs"].append(j.get("job")); meta["hosts"].add(j.get("host"))
         meta["gpu"] = (j.get("snap_start", {}).get("gpu", "") or "").split(",")[0] or meta.get("gpu")
-        for r in j["records"]: r["_job"] = j.get("job"); recs.append(r)
+        ok = {}
+        for i, ps in enumerate(j.get("passes", []), start=1):
+            c = ps.get("cotenant"); ok[i] = (c is not None and c.get("foreign_processes_after_wait", 1) == 0)
+        for r in j["records"]:
+            if r.get("kind") in ("time", "train") and not ok.get(r.get("pass"), False):
+                meta["dropped"][(j.get("job"), r.get("kind"))] += 1; continue
+            r["_job"] = j.get("job"); recs.append(r)
     return recs, meta
 
 def size_side(sid): return int(sid.split("-")[1])       # narrow-64 -> 64
@@ -71,13 +79,18 @@ def mem_data(recs):
             M[(r["contender"], r["mode"], r["size"])] = r
     return M
 
+def mem_value(r):
+    """Footprint in bytes. A CUDA graph replays inside a private pool: freed activation buffers stay reserved, so use the reserved pool for it."""
+    if r["contender"] == "P-GRAPH" and r.get("M_B") is not None: return max(r["M_A"], r["M_B"])
+    return r["M_A"]
+
 def panel_mem(ax, M, mode="adjoint"):
     sizes = sorted({s for (_, m, s) in M if m == mode}, key=lambda s: (s.split("-")[0], size_side(s)))
     if not sizes: ax.text(.5, .5, "no memory data", ha="center", transform=ax.transAxes); return
     cs = [c for c in ORDER if any((c, mode, s) in M for s in sizes)]
     w = 0.8 / max(len(cs), 1); x = np.arange(len(sizes))
     for i, c in enumerate(cs):
-        ys = [M[(c, mode, s)]["M_A"] / 2**20 if (c, mode, s) in M else np.nan for s in sizes]
+        ys = [mem_value(M[(c, mode, s)]) / 2**20 if (c, mode, s) in M else np.nan for s in sizes]
         ax.bar(x + (i - (len(cs) - 1) / 2) * w, ys, w * 0.92, color=COL[c], label=LAB[c])
     ax.set_xticks(x); ax.set_xticklabels([s.replace("narrow-", "n-").replace("wide-", "w-") for s in sizes]); ax.set_yscale("log")
     ax.set_ylabel("memory (MiB)"); ax.set_xlabel("U-Net size"); ax.set_title("Memory (arrays + tape + temporaries)")
@@ -90,7 +103,7 @@ def fig_main(recs, meta, out):
     h, l = axs[0, 0].get_legend_handles_labels()
     if not h: h, l = axs[0, 1].get_legend_handles_labels()
     fig.legend(h, l, loc="upper center", ncol=5, bbox_to_anchor=(0.5, 0.945), fontsize=13, frameon=False)
-    footer(fig, meta, "hollow markers = wide net (32, 64)"); fig.tight_layout(rect=(0, 0.04, 1, 0.9)); fig.savefig(out + ".png", dpi=200); fig.savefig(out + ".svg"); plt.close(fig)
+    footer(fig, meta, "hollow markers = wide net (32, 64)"); fig.text(0.01, 0.034, "Memory: arrays + tape (STADE) · static analysis of the executable (JAX) · peak allocated (PyTorch eager) · reserved pool (PyTorch CUDA graph)", fontsize=10.5, color="#555"); fig.tight_layout(rect=(0, 0.06, 1, 0.9)); fig.savefig(out + ".png", dpi=200); fig.savefig(out + ".svg"); plt.close(fig)
 
 def fig_single(recs, meta, out, which):
     TA, TP = times(recs, "adjoint"), times(recs, "primal"); fig, ax = plt.subplots(figsize=(10, 6.2))
@@ -100,17 +113,34 @@ def fig_single(recs, meta, out, which):
     elif which == "memory": panel_mem(ax, mem_data(recs)); ax.legend(fontsize=11)
     footer(fig, meta); fig.tight_layout(rect=(0, 0.04, 1, 1)); fig.savefig(out + ".png", dpi=200); fig.savefig(out + ".svg"); plt.close(fig)
 
+def parity(R):
+    """Relative difference of the step-300 loss against the median of the other tools. The plan's gate is 1e-6."""
+    l300 = {c: R[c]["losses_at"].get("300") for c in R if R[c].get("losses_at", {}).get("300") is not None}
+    out = {}
+    for c in l300:
+        others = [v for k, v in l300.items() if k != c]
+        out[c] = abs(l300[c] - np.median(others)) / abs(np.median(others)) if others else 0.0
+    return out
+
 def fig_train(recs, meta, out):
     R = {r["contender"]: r for r in recs if r.get("kind") == "train" and r.get("model") == "M3" and r.get("sync_step_us")}
     if not R: return False
-    cs = [c for c in ORDER if c in R]; fig, axs = plt.subplots(1, 2, figsize=(13.33, 5.6)); x = np.arange(len(cs))
+    cs = [c for c in ORDER if c in R]; par = parity(R); bad = {c for c in cs if par.get(c, 0) > 1e-6}
+    fig, axs = plt.subplots(1, 2, figsize=(13.33, 5.8)); x = np.arange(len(cs))
     med = [np.median(R[c]["sync_step_us"]) / 1e3 for c in cs]; lo = [med[i] - np.percentile(R[c]["sync_step_us"], 25) / 1e3 for i, c in enumerate(cs)]; hi = [np.percentile(R[c]["sync_step_us"], 75) / 1e3 - med[i] for i, c in enumerate(cs)]
-    axs[0].bar(x, med, color=[COL[c] for c in cs], yerr=[lo, hi], capsize=4); axs[0].set_xticks(x); axs[0].set_xticklabels([LAB[c].replace(" ", "\n", 1) for c in cs], fontsize=11); axs[0].set_ylabel("time per training step (ms)"); axs[0].set_title("Step time (synchronized, median and quartiles)")
-    axs[1].bar(x, [R[c]["throughput_steps_per_s"] for c in cs], color=[COL[c] for c in cs]); axs[1].set_xticks(x); axs[1].set_xticklabels([LAB[c].replace(" ", "\n", 1) for c in cs], fontsize=11); axs[1].set_ylabel("steps per second"); axs[1].set_title("Throughput (pipelined, 300 steps)")
-    for ax, vals in ((axs[0], med), (axs[1], [R[c]["throughput_steps_per_s"] for c in cs])):
-        for i, v in enumerate(vals): ax.text(i, v, f"{v:.3g}", ha="center", va="bottom", fontsize=12)
-    fig.suptitle("U-Net training, batch size 1, plain SGD (32×32 input, 3→8→16→32 channels)", fontsize=17)
-    footer(fig, meta, "300 measured steps after 20 warm-up"); fig.tight_layout(rect=(0, 0.03, 1, 0.95)); fig.savefig(out + ".png", dpi=200); fig.savefig(out + ".svg"); plt.close(fig); return True
+    thr = [R[c]["throughput_steps_per_s"] for c in cs]
+    for ax, vals, kw in ((axs[0], med, dict(yerr=[lo, hi], capsize=4)), (axs[1], thr, {})):
+        bars = ax.bar(x, vals, color=[COL[c] for c in cs], **kw)
+        for b, c in zip(bars, cs):
+            if c in bad: b.set_hatch("//"); b.set_edgecolor("black"); b.set_alpha(0.55)
+        for i, v in enumerate(vals): ax.text(i, v, (f"{v:.0f}" if v >= 100 else f"{v:.3g}"), ha="center", va="bottom", fontsize=12, bbox=dict(fc="white", ec="none", pad=1, alpha=.7))
+        ax.set_xticks(x); ax.set_xticklabels([LAB[c].replace(" ", "\n", 1) for c in cs], fontsize=11)
+    axs[0].set_ylabel("time per training step (ms)"); axs[0].set_title("Step time (synchronized, median and quartiles)"); axs[1].set_ylabel("steps per second"); axs[1].set_title("Throughput (pipelined, 300 steps)")
+    fig.suptitle("U-Net training, batch size 1, plain SGD (32×32 input, 3→8→16→32 channels)", fontsize=17, y=0.99)
+    note = ""
+    if bad: note = "Hatched = fails the parity gate: loss at step 300 differs by " + ", ".join(f"{par[c]:.1e} ({LAB[c]})" for c in cs if c in bad) + " from the other tools (limit 1e-6). Cause not investigated."
+    if note: fig.text(0.5, 0.045, note, ha="center", fontsize=11.5, color="#8e1b1b")
+    footer(fig, meta, "300 measured steps after 20 warm-up"); fig.tight_layout(rect=(0, 0.08, 1, 0.95)); fig.savefig(out + ".png", dpi=200); fig.savefig(out + ".svg"); plt.close(fig); return True
 
 def summary_table(recs):
     TA, TP = times(recs, "adjoint"), times(recs, "primal"); rows = []
@@ -128,7 +158,7 @@ def summary_table(recs):
 if __name__ == "__main__":
     d, out = sys.argv[1], sys.argv[2]; os.makedirs(out, exist_ok=True)
     recs, meta = load(d); n = sum(1 for r in recs if r.get("kind") in ("time", "mem", "train"))
-    print("records used:", n, "| jobs:", meta.get("jobs"), "| hosts:", sorted(meta.get("hosts", [])))
+    print("records used:", n, "| jobs:", meta.get("jobs"), "| hosts:", sorted(meta.get("hosts", [])), "| dropped (timing/training from passes without a clean-GPU record):", dict(meta["dropped"]))
     fig_main(recs, meta, os.path.join(out, "unet_overview"))
     for w in ("adjoint", "primal", "ratio", "memory"): fig_single(recs, meta, os.path.join(out, "unet_" + w), w)
     print("training figure:", fig_train(recs, meta, os.path.join(out, "unet_training")))

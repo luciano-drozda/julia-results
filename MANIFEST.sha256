@@ -149,7 +149,7 @@ cc1b043a56841cf5a74549f8be6f7a9140fabcdaa1aed92a266a96f571343b3c  ./sources/jacc
 2b47fbeb2902a7eef707bafacb8066066205292e05ec73bdba901d51b2ff847b  ./sources/jacc-reduction/validate_backend_agreement_before_race_fix.txt
 df22a6b022973abcdd5a191e02e081abd33d04ec27e0a44067017afbf679a019  ./sources/phase0/analysis/analyze.py
 69269d8256ed2352c9de02a288042e16a296d3b74fe254161383072b0f69e4a5  ./sources/phase0/analysis/test_analyze.py
-e3c2e6a95979340165a48b6fc4fbbf070d11a826d3325605fdb5e2bbb1604b31  ./sources/phase0/analysis/unet_plots.py
+3f4076779bd5044ea10e52e8ad98cd4999756bc2fd54f8d56fe62c3cee3a7c3a  ./sources/phase0/analysis/unet_plots.py
 5f427421ee04b902f44f3584d49f74ed84b3c1b86d3541a6c2817636edc72220  ./sources/phase0/build_payload.py
 2a64a9bde5b51629f53b38d3a6f4140c55870fd4786ac114994a3028a9eb513b  ./sources/phase0/final/advection_b_cuda.stripped.jl
 22b78390d4c1e358e56b07a8d589ab08cd6ea6994c61f7f7d94bc0dbddd7711d  ./sources/phase0/final/advection_b_jacc.stripped.jl
@@ -212,6 +212,8 @@ f06a43aa010bc97817802e141d5f9c7fab605e89fa1ba2dd37516eed01562301  ./sources/phas
 64aa4d796742c3e8d9615477e6486ae9a0e57206dddef5a6b9fe9d786060a584  ./sources/phase0/jobs/bench-j7a-r2.json
 b287bd82d0b57cbf72ac6d7a97e4cdbe14c60af534fdde00e2aa0e73330f8df8  ./sources/phase0/jobs/bench-j7b-r1.json
 dd7489795a7b28dc4b443e6774abd0c3163c69f133d23060c1d6248e6f7db324  ./sources/phase0/jobs/bench-j7b-r2.json
+c1b096b21ea6a32efb048025718f46f14e6ca2c54344628a235e494384513c6e  ./sources/phase0/jobs/bench-m1-r1.json
+939c669cd2b09626ae12fa698fe07501dd2dec0049eea582842c5ea6f8bbcf51  ./sources/phase0/jobs/bench-m2-r1.json
 9539fcb84ab6fe613e17f4c460bb6a25ba64a4e2fe0e86e32f3582a7042ce7f0  ./sources/phase0/jobs/bench-u1-r1.json
 ba339bd0fafd5d9d84e45c992cf575fe73408cd5071abe39fed50a2064360c4e  ./sources/phase0/jobs/bench-u1-r2.json
 92ee3dce5e0300fa5f60bd857e2ab347b54fd75b743f953865b078c0d4c0d492  ./sources/phase0/jobs/bench-u2-r1.json
