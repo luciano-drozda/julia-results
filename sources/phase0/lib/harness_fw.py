@@ -26,6 +26,12 @@ if FW == "torch":
     torch.backends.cudnn.benchmark = bool(TASKS.get("cudnn_benchmark", True))
     DEV = "cuda" if torch.cuda.is_available() else "cpu"
     def sync(): torch.cuda.synchronize() if DEV == "cuda" else None
+    GSTREAM = torch.cuda.Stream() if DEV == "cuda" else None
+    if DEV == "cuda":      # allocate the cuBLAS workspace of the default and the side stream once, before any probe
+        for _st in (torch.cuda.current_stream(), GSTREAM):
+            with torch.cuda.stream(_st):
+                _a = torch.ones(8, 8, dtype=torch.float64, device="cuda"); _b = _a @ _a
+        torch.cuda.synchronize(); del _a, _b
     def to_dev(a): return torch.from_numpy(np.ascontiguousarray(a)).to(DEV)
     def to_np(t): return t.detach().cpu().numpy()
 else:
@@ -92,7 +98,7 @@ def make_adjoint(fam, P, c, variant, scope):
             loss.backward()
             return loss
         if variant == "graph":
-            s = torch.cuda.Stream(); s.wait_stream(torch.cuda.current_stream())
+            s = GSTREAM; s.wait_stream(torch.cuda.current_stream())
             with torch.cuda.stream(s):
                 for _ in range(3): evaluate()
             torch.cuda.current_stream().wait_stream(s); sync()
@@ -129,7 +135,7 @@ def make_primal(fam, P, c, variant):
         def run():
             with torch.no_grad(): return M.FORWARD[fam](ops, Pp, c)
         if variant == "graph":
-            s = torch.cuda.Stream(); s.wait_stream(torch.cuda.current_stream())
+            s = GSTREAM; s.wait_stream(torch.cuda.current_stream())
             with torch.cuda.stream(s):
                 for _ in range(3): run()
             torch.cuda.current_stream().wait_stream(s); sync()
@@ -320,7 +326,7 @@ def run_train(t):
             with torch.no_grad():
                 for n in pnames: leaves[n].copy_(init[n])
         if variant == "graph":
-            s = torch.cuda.Stream(); s.wait_stream(torch.cuda.current_stream())
+            s = GSTREAM; s.wait_stream(torch.cuda.current_stream())
             with torch.cuda.stream(s):
                 for _ in range(3): body()
             torch.cuda.current_stream().wait_stream(s); sync(); reset_params()
