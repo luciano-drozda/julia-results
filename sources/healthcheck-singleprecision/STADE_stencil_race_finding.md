@@ -1,5 +1,7 @@
 # STADE 0.4.3: data race in the generated GPU adjoints of `stencil_loss` and `advection`
 
+> **Status 2026-10-04: FIXED and verified on the V100** (STADE zip SHA-256 `d60e495a...`). See "Verification of the fix" and the open item "JACC reduction omits one term" at the end of this note.
+
 Found on 2026-10-03 during a single-precision health check. Tesla V100-PCIE-16GB, CUDA.jl, JACC 1.3.1, Julia 1.11.9 (code generated with Julia 1.10.11).
 Raw data: branch `bench-raw` of `luciano-drozda/julia-results`, folder `raw/healthchecks/` (jobs `healthcheck-sp-v100-*`, `diag-stencil-race2-*`) and `sources/healthcheck-singleprecision/`.
 
@@ -67,3 +69,26 @@ Note for test authors: after the adjoint call, `du` holds its **initial** values
 
 ## Suggested regression test
 Run `validate_corpus_gpu.jl` with integer arguments above the warp size (for example `i_n = 1000`) and repeat each adjoint 5 times. A race shows as a wrong or a changing result.
+
+## Verification of the fix (2026-10-04, jobs `verify-fixed-*`)
+- Your static test `validate_write_overlap.jl`: 23/23 checks pass in the sandbox.
+- Regeneration diff: only the adjoints of `stencil_loss` and `advection` changed (CUDA and JACC). The other adjoints and all primals are byte-identical. The static scan flags 0 kernels (before: 2).
+- Stencil adjoint, n = 4 to 1,000,000, 8 repeats per size, CUDA and JACC, Float64: gradient error at most 2.9e-16, identical repeats. (Before the fix: 0.7 to 2.4 at n >= 512 and different answers per run at n = 256.)
+- Advection adjoint, 7 sizes, 5 repeats, CUDA and JACC, Float64 and Float32: `ub` error at most 9e-16 (Float64) and 3e-7 (Float32). (Before the fix: 0.06 to 0.8 at n >= 100.) Scalar gradients and the other outputs are correct.
+- Single precision against PyTorch and JAX: the STADE float32 error equals the framework float32 error on all cases.
+- Limits stated in your code (additive writes only, different index expressions only) remain. Plain-assignment races are not covered. I did not test them.
+
+## Open item: JACC reduction omits one term (pre-existing, not related to the race)
+`stencil_loss_jacc` and the forward sweep of `stencil_loss_b_jacc` compute the loss for `n >= 32770` with:
+```julia
+__jgen_redval_2 = JACC.@parallel_reduce(range = div((i_n - 1) - 2, 1) + 1, (((i_x2, w)->w[i_x2] ^ 2))(w))
+```
+The source loop is `for i_x2 = 2:i_n-1`. The reduction index starts at 1, so the sum covers `w[1..n-2]` and misses `w[n-1]`.
+Observed loss error (Float64, JACC): 9.9e-7 at n = 40000. A CPU calculation of the missing term predicts 9.86e-7. At n = 1,000,000 the prediction is 6.76e-7 and the observation is about 7e-7.
+The CUDA reduction `sum(init = zero(eltype(view(w, 2:i_n - 1))), abs2, view(w, 2:i_n - 1))` is correct, and the JACC `jacc_kernel_*` loops that use `__jacc_i` with an explicit offset are correct.
+Likely fix: add the loop's lower bound minus one to the reduction index (`w[i_x2 + 1]`), or map the range in the lambda.
+Exposed kernels among the benchmark kernels: only `stencil_loss`. `dotprod`, `matvec_loss`, `transformer_loss`, `mpnn_loss`, and `unet_loss` reduce over loops that start at 1.
+Suggested test: a JACC primal of a reduction loop that starts at 2, with n above the reduction threshold (32768), compared with a sequential sum.
+
+## Limitation: no GPU primal for a kernel that calls a kernel
+`stade_cuda_file` on a root kernel that calls another kernel (for example `mpnn_loss` calling `mpnn`) fails in `cgen_ingest` ("unsupported statement form `Expr(:call, ...)`"). The old and the fixed STADE behave the same. The adjoint path inlines the callee and works.
