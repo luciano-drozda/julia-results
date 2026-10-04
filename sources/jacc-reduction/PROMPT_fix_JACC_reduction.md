@@ -1,3 +1,5 @@
+> **Status 2026-10-04: DONE.** Applied in STADE 0.4.4 and verified on the V100 (see `STADE_vs_PyTorch_JAX_benchmark_plan.md`, section 2.4). Keep this file only as a record.
+
 # Prompt for the STADE session: fix the JACC idiomatic-reduction path
 
 Copy everything below the line into the other session.

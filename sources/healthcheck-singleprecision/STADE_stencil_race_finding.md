@@ -1,6 +1,6 @@
 # STADE 0.4.3: data race in the generated GPU adjoints of `stencil_loss` and `advection`
 
-> **Status 2026-10-04: FIXED and verified on the V100** (STADE zip SHA-256 `d60e495a...`). See "Verification of the fix" and the open item "JACC reduction omits one term" at the end of this note.
+> **Status 2026-10-04: race FIXED (0.4.3 + fix), and the JACC reduction defects FIXED in 0.4.4. Both verified on the V100** (STADE zip SHA-256 `d60e495a...`). See "Verification of the fix" and the open item "JACC reduction omits one term" at the end of this note.
 
 Found on 2026-10-03 during a single-precision health check. Tesla V100-PCIE-16GB, CUDA.jl, JACC 1.3.1, Julia 1.11.9 (code generated with Julia 1.10.11).
 Raw data: branch `bench-raw` of `luciano-drozda/julia-results`, folder `raw/healthchecks/` (jobs `healthcheck-sp-v100-*`, `diag-stencil-race2-*`) and `sources/healthcheck-singleprecision/`.
@@ -88,3 +88,10 @@ A full prompt for the fix is in `PROMPT_fix_JACC_reduction.md`.
 
 ## Limitation: no GPU primal for a kernel that calls a kernel
 `stade_cuda_file` on a root kernel that calls another kernel (for example `mpnn_loss` calling `mpnn`) fails in `cgen_ingest` ("unsupported statement form `Expr(:call, ...)`"). The old and the fixed STADE behave the same. The adjoint path inlines the callee and works.
+
+## Status of the open items (STADE 0.4.4, verified 2026-10-04, jobs `verify044-*`)
+- JACC reduction, wrong elements: **fixed.** Six loop shapes (`2:n`, `1:2:n`, `n:-1:3`, `3:3:n`, `n:-2:2`, and a two-array dot over `2:n`), forced onto the reduce path, equal CUDA to rounding on JACC. The stencil loss at n = 40000 is exact in Float64 (was 9.9e-7).
+- JACC reduction, zero trips: **fixed.** The four zero-trip cases return 0.
+- `validate_backend_agreement.jl`: 142/142 (was 112/142). `validate_jacc_reduction.jl`: 38/38. `validate_write_overlap.jl`: 23/23.
+- Regeneration: CUDA output unchanged. JACC output changed only for kernels with an idiomatic reduction. `dotprod` and `matvec_loss` are correct on both backends on the reduce path (worst error 1.9e-14, up to n = 1,000,000).
+- Still open: no GPU primal for a kernel that calls a kernel (same in all versions).
