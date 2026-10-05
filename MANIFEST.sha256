@@ -150,6 +150,9 @@ e665c8968320e5e24cd7d93bbe0ea5a2b76b327744af2e8b1308edc50078922d  ./raw/p2-unet-
 20fb815950f42312ea029fd6b1a56487bc70a68e3bf568d693e28efc4ecf994c  ./raw/p2-unet-fast/diag-unet-opt3-20261005T111720Z/job.json
 244954284262892f85f4f0f4bc73469991202addbefd56c92ad97e697b6c54a0  ./raw/p2-unet-fast/diag-unet-opt3-20261005T111720Z/result.json
 2f7a0be598310f23f4af44a0c47afd3943879cdb1d2734b07bd71290558c1d52  ./raw/p2-unet-fast/diag-unet-opt3-20261005T111720Z/submission.json
+3abaf305d4d15a10f80960452d10df9f97d885907f6d932cb1c5e1a3d731a983  ./raw/p2-unet-fast/diag-unet-opt4-20261005T145643Z/job.json
+2083637e14baa3fa931cef0bfec5da5d389fd8b1d71f0d055257b5a1d0f8e604  ./raw/p2-unet-fast/diag-unet-opt4-20261005T145643Z/result.json
+6286331c7a9ad3f07ff226a149eeb77ab1863852b2cdd4ad67100a85e0527662  ./raw/p2-unet-fast/diag-unet-opt4-20261005T145643Z/submission.json
 b23dc2c621b9705107ed39fd04c49d556533df137558e703a799964fb5a43817  ./raw/p2-unet-fast/diag-unet-prologue-20261005T102952Z/job.json
 f5212b2b56a1630a8c260174c2a3e7513a8e1990e4f34f9ed1772951637b142f  ./raw/p2-unet-fast/diag-unet-prologue-20261005T102952Z/result.json
 7a6f2f6af62fb90654a6a9b466d4601ba7ae329aea0d67b2c65a6441a499932d  ./raw/p2-unet-fast/diag-unet-prologue-20261005T102952Z/submission.json
