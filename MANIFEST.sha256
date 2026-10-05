@@ -132,6 +132,9 @@ f5e942e94e8fb068fdb795eb0fff447fd721f37a6aed0b4c91d46f6d4d4061d7  ./raw/p2-unet-
 f9537c6854c01989c983c89d6e1d90505ee3d695994c653aefca0d5e47d834c3  ./raw/p2-unet-fast/diag-unet-gap-20261005T095516Z/job.json
 e3d01bca92d9750a1118a7657788cbbb0f3f3edd5cc397972d81e9baf94fa3e8  ./raw/p2-unet-fast/diag-unet-gap-20261005T095516Z/result.json
 51d77854cbd2cc947b71ca96fd1d97ba00145a15fd59f44b2483a1231d53aecd  ./raw/p2-unet-fast/diag-unet-gap-20261005T095516Z/submission.json
+bd1947ee99e5747b61ff1761361850e5015d66ea0864d99c063c6f7e10a9e45b  ./raw/p2-unet-fast/diag-unet-rest-20261005T101822Z/job.json
+cc7a4a968a9a4b193792d7686ced3ac4018321b7324266179b4f25da679f803a  ./raw/p2-unet-fast/diag-unet-rest-20261005T101822Z/result.json
+9652c1bd4114a510c828e408775e5b4809c93e586edef455611f1036a132d204  ./raw/p2-unet-fast/diag-unet-rest-20261005T101822Z/submission.json
 16d4f5854fe681bad9a66b85964978290633b1e80347897c1c40b28997a292a0  ./sources/healthcheck-advection/README.md
 28baefbcfe81ab3878a39fb4aa40cc1c2a593c235d8cf0ab1ca433437673593b  ./sources/healthcheck-advection/adv_driver_run1_du_expectation_flawed.jl
 21771d463b481a10d0ec86458b16c8b0127ff9d6967b7dc5f1247a47382b564d  ./sources/healthcheck-advection/adv_driver_run2_valid.jl
