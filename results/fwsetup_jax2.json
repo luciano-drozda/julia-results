@@ -1,0 +1,1 @@
+{"host":"krakengpu2.cluster","runs":[{"name":"setup_jax","exit":0,"seconds":1.2,"result":{"fw":"jax","log":"python: /usr/bin/python3 Python 3.6.8\nFATAL: python is older than 3.9\n"},"stderr_tail":""}]}
