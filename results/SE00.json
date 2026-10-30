@@ -1,0 +1,1 @@
+{"ok":10,"total":10,"bad":[],"changed":["cascadic_mg_prolong/adjoint=234","cascadic_mg_prolong/hvp=468","ddp_ragged/adjoint=60","ddp_ragged/hvp=120","dotprod/adjoint=21","dotprod/hvp=42","early_stage_offset/adjoint=135","early_stage_offset/hvp=270","red_strided/adjoint=15","red_strided/hvp=30"]}
