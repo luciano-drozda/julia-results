@@ -1,0 +1,1 @@
+{"host":"krakengpu1.cluster","runs":[{"name":"C1_time","exit":0,"seconds":13.7,"result":null,"stderr_tail":""},{"name":"C2_time","exit":0,"seconds":9.6,"result":null,"stderr_tail":""}]}
