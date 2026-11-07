@@ -1,0 +1,1 @@
+{"root":"/scratch/coop/drozda/stade_chain/run_1794058996","tasks":{"carry_units":{"rc":0,"last":"all carry fold checks passed","ok_lines":16,"s":19}},"nproc":64,"run_s":19.579560041427612,"n_failed":0,"chain_steps":["carry_units"],"total_s":20.632755994796753,"failed":{},"julia":"1.11.9","n_tasks":1,"host":"krakenepyc1.cluster"}
