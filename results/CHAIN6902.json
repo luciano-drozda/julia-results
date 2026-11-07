@@ -1,0 +1,1 @@
+{"root":"/scratch/coop/drozda/stade_chain/run_1794032818","tasks":{"inbounds_uc":{"rc":0,"last":"INB_FAILS 0","ok_lines":60,"s":153}},"nproc":64,"run_s":153.36345720291138,"n_failed":0,"chain_steps":["inbounds_uc"],"total_s":154.37045097351074,"failed":{},"julia":"1.11.9","n_tasks":1,"host":"krakenepyc1.cluster"}
