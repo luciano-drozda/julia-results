@@ -1,0 +1,1 @@
+{"results":[{"backend":"jacc","status":"ok","kernel":"retire_if","mode":"adjoint","changed":219,"ints":[34,40],"max_rel_err":6.995154922711997e-14},{"backend":"jacc","status":"ok","kernel":"retire_if","mode":"hvp","changed":438,"ints":[34,40],"max_rel_err":1.1082467104751083e-15}]}
