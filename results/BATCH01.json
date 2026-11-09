@@ -1,1 +1,0 @@
-{"host":"krakengpu1.cluster","result":{"status":0,"rank":0,"ranks":2,"max_rel_err":5.962325025458257e-16,"t_one_ms":31.052982906249998,"t_one_rank_ms":993.6954529999999,"t_par_ms":526.2889862060547}}

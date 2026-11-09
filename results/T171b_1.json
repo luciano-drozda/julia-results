@@ -1,1 +1,0 @@
-{"shard_seconds":215.5,"kernel_seconds":{},"workers":3,"results":[{"status":"timeout","kernel":"bnd_branch","mode":"-","seconds":120.0},{"status":"timeout","kernel":"idm_tile","mode":"-","seconds":120.0},{"status":"timeout","kernel":"bnd_carried","mode":"-","seconds":120.0}]}
