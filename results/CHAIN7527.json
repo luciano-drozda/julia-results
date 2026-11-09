@@ -1,0 +1,1 @@
+{"root":"/scratch/coop/drozda/stade_chain/run_1794221300","tasks":{"seed_stable":{"rc":0,"last":"all 22 seed checks passed","ok_lines":0,"s":6}},"nproc":64,"run_s":6.847249984741211,"n_failed":0,"chain_steps":["seed_stable"],"total_s":7.814701080322266,"failed":{},"julia":"1.11.9","n_tasks":1,"host":"krakenepyc1.cluster"}
