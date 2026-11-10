@@ -1,0 +1,1 @@
+{"lines":["liveout_red_top [adjoint/cuda]         ok  max_rel_err=0.0  changed=33","liveout_red_top [adjoint/jacc]         ok  max_rel_err=0.0  changed=33","liveout_red_top [hvp/cuda]             ok  max_rel_err=5.013e-16  changed=66","liveout_red_top [hvp/jacc]             ok  max_rel_err=5.013e-16  changed=66","4/4 checks passed"]}
