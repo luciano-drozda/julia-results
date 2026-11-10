@@ -1,0 +1,1 @@
+{"lines":["mlp1d [adjoint/cuda]                   ok  max_rel_err=4.441e-16  changed=213","mlp1d [adjoint/jacc]                   ok  max_rel_err=4.441e-16  changed=213","mlp1d [hvp/cuda]                       ok  max_rel_err=2.998e-15  changed=426","mlp1d [hvp/jacc]                       ok  max_rel_err=2.998e-15  changed=426","4/4 checks passed"]}
