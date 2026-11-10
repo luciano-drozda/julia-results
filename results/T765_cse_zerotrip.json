@@ -1,0 +1,1 @@
+{"lines":["cse_zerotrip [adjoint/cuda]            ok  max_rel_err=1.662e-16  changed=54","cse_zerotrip [adjoint/jacc]            ok  max_rel_err=1.662e-16  changed=54","cse_zerotrip [hvp/cuda]                ok  max_rel_err=1.192e-16  changed=108","cse_zerotrip [hvp/jacc]                ok  max_rel_err=1.192e-16  changed=108","4/4 checks passed"]}
