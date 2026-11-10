@@ -1,0 +1,1 @@
+{"lines":["red_two_locals [adjoint/cuda]          ok  max_rel_err=2.504e-16  changed=21","red_two_locals [adjoint/jacc]          ok  max_rel_err=2.504e-16  changed=21","red_two_locals [hvp/cuda]              ok  max_rel_err=3.279e-16  changed=42","red_two_locals [hvp/jacc]              ok  max_rel_err=3.279e-16  changed=42","4/4 checks passed"]}
