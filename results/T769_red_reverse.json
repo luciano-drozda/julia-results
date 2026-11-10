@@ -1,0 +1,1 @@
+{"lines":["red_reverse [adjoint/cuda]             ok  max_rel_err=1.75e-16  changed=33","red_reverse [adjoint/jacc]             ok  max_rel_err=1.75e-16  changed=33","red_reverse [hvp/cuda]                 ok  max_rel_err=2.169e-16  changed=66","red_reverse [hvp/jacc]                 ok  max_rel_err=2.169e-16  changed=66","4/4 checks passed"]}
