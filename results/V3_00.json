@@ -1,0 +1,1 @@
+{"lines":["two_field_loss [adjoint/cuda]          ok  max_rel_err=1.127e-16  changed=57","two_field_loss [adjoint/jacc]          ok  max_rel_err=1.127e-16  changed=57","two_field_loss [hvp/cuda]              ok  max_rel_err=2.22e-16  changed=114","two_field_loss [hvp/jacc]              ok  max_rel_err=2.22e-16  changed=114","4/4 checks passed"]}
