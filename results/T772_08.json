@@ -1,0 +1,1 @@
+{"lines":["windowed_relax_retire [adjoint/cuda]   ok  max_rel_err=0.0  changed=36","windowed_relax_retire [adjoint/jacc]   ok  max_rel_err=0.0  changed=36","windowed_relax_retire [hvp/cuda]       ok  max_rel_err=0.0  changed=72","windowed_relax_retire [hvp/jacc]       ok  max_rel_err=0.0  changed=72","4/4 checks passed"]}
