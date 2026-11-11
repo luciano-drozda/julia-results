@@ -1,0 +1,1 @@
+{"lines":["unet [adjoint/cuda]                    ok  max_rel_err=5.001e-14  changed=10134","unet [adjoint/jacc]                    ok  max_rel_err=5.001e-14  changed=10134","unet [hvp/cuda]                        ok  max_rel_err=5.211e-12  changed=20268","unet [hvp/jacc]                        ok  max_rel_err=3.475e-12  changed=20268","4/4 checks passed"]}
