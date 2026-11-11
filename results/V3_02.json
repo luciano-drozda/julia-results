@@ -1,0 +1,1 @@
+{"lines":["weightedsumsq [adjoint/cuda]           ok  max_rel_err=1.193e-16  changed=27","weightedsumsq [adjoint/jacc]           ok  max_rel_err=1.193e-16  changed=27","weightedsumsq [hvp/cuda]               ok  max_rel_err=2.754e-16  changed=54","weightedsumsq [hvp/jacc]               ok  max_rel_err=2.754e-16  changed=54","4/4 checks passed"]}
