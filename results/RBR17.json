@@ -1,0 +1,1 @@
+{"julia":"1.11.9","total_s":135.73092103004456,"n_tasks":1,"host":"krakenepyc1.cluster","tasks":{"validate_boxed_reset":{"rc":0,"last":"validate_boxed_reset: 196/196 ok","s":134}},"nproc":64,"run_s":134.7092478275299,"n_failed":0,"failed":{}}
