@@ -1,0 +1,1 @@
+{"log":"WORK=/scratch/coop/drozda host=krakengpu1.cluster\n/scratch/coop/drozda/stade_fw_venv\n/scratch/coop/drozda/stade_fw_venv_torch126\nname, memory.total [MiB], memory.used [MiB]\nTesla V100-PCIE-16GB, 16384 MiB, 1 MiB\nenv: ‘python’: No such file or directory\n/home/coop/drozda/.juliaup/bin/julia\njulia version 1.11.9\n"}
