@@ -1,0 +1,1 @@
+{"lines":["sa_a7 [adjoint/cuda]                   ok  max_rel_err=3.947e-15  changed=1617","sa_a7 [adjoint/jacc]                   ok  max_rel_err=3.947e-15  changed=1617","sa_a7 [hvp/cuda]                       ok  max_rel_err=2.464e-13  changed=3234","sa_a7 [hvp/jacc]                       ok  max_rel_err=2.464e-13  changed=3234","4/4 checks passed"]}
