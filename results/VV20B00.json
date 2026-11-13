@@ -1,0 +1,1 @@
+{"lines":["pv_a20 [adjoint/cuda]                  ok  max_rel_err=1.483e-16  changed=24","pv_a20 [adjoint/jacc]                  ok  max_rel_err=1.483e-16  changed=24","pv_a20 [hvp/cuda]                      ok  max_rel_err=1.11e-16  changed=48","pv_a20 [hvp/jacc]                      ok  max_rel_err=1.11e-16  changed=48","4/4 checks passed"]}
