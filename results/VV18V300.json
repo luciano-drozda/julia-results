@@ -1,0 +1,1 @@
+{"lines":["transformer [adjoint/cuda]             ok  max_rel_err=8.793e-14  changed=6976","transformer [adjoint/jacc]             ok  max_rel_err=8.793e-14  changed=6976","transformer [hvp/cuda]                 ok  max_rel_err=2.282e-12  changed=13972","transformer [hvp/jacc]                 ok  max_rel_err=2.282e-12  changed=13972","4/4 checks passed"]}
