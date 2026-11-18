@@ -1,0 +1,1 @@
+{"input": {"_script": "using JSON3, CUDA\nprintln(JSON3.write(Dict(\"ok\"=>true,\"dev\"=>string(CUDA.name(CUDA.device())))))\n", "_topology": "single_gpu"}}
