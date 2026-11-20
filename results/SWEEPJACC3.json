@@ -1,0 +1,1 @@
+{"julia":"1.11.9","total_s":1672.980043888092,"n_tasks":2,"host":"krakenepyc1.cluster","tasks":{"validate_jacc_contraction":{"rc":0,"last":"all JACC contraction checks passed","s":1672},"validate_jacc_glue":{"rc":0,"last":"ALL OK","s":454}},"nproc":64,"run_s":1671.7992470264435,"n_failed":0,"failed":{}}
