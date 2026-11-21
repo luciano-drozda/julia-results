@@ -1,0 +1,1 @@
+{"julia":"1.11.9","total_s":66.64878106117249,"n_tasks":3,"host":"krakenepyc1.cluster","tasks":{"validate_generated_untracked":{"rc":0,"last":"ALL OK","s":1},"validate_host_stack_note":{"rc":0,"last":"ALL OK","s":65},"validate_shadow_names":{"rc":0,"last":"ALL OK","s":9}},"nproc":64,"run_s":65.44733095169067,"n_failed":0,"failed":{}}
