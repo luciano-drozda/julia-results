@@ -1,1 +1,0 @@
-{"julia":"1.11.9","total_s":570.5428659915924,"n_tasks":2,"host":"krakenepyc1.cluster","tasks":{"validate_dead_pops":{"rc":0,"last":"all dead pop checks passed","s":569},"validate_jacc_dead_pops":{"rc":0,"last":"all JACC dead pop checks passed","s":527}},"nproc":64,"run_s":569.5599789619446,"n_failed":0,"failed":{}}

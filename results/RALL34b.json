@@ -1,1 +1,0 @@
-{"julia":"1.11.9","total_s":2154.0132200717926,"n_tasks":1,"host":"krakenepyc1.cluster","tasks":{"validate_inactive_read":{"rc":0,"last":"ok     sabotage \"the HVP ignores the plan for its sites\": a check fails","s":2153}},"nproc":64,"run_s":2152.9763689041138,"n_failed":0,"failed":{}}
