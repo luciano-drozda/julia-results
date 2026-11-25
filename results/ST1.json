@@ -1,0 +1,1 @@
+{"sq":"     JOBID ST       TIME CPUS MIN_MEMORY NODELIST NODELIST(REASON)\n   2099068  R       1:16 64 100G krakenepyc1 krakenepyc1\n","acct":"JobID|State|Elapsed|ReqMem|AllocCPUS|NodeList\n2099068|RUNNING|00:01:16|100G|64|krakenepyc1\n2099068.batch|RUNNING|00:01:16||64|krakenepyc1\n2099068.extern|RUNNING|00:01:16||64|krakenepyc1\n"}
