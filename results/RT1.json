@@ -1,1 +1,0 @@
-{"julia":"1.11.9","total_s":13.21427607536316,"n_tasks":1,"host":"krakenepyc1.cluster","tasks":{"validate_ddp_roles":{"rc":0,"last":"31/31 checks passed","s":11}},"nproc":64,"run_s":11.946254968643188,"n_failed":0,"failed":{}}
